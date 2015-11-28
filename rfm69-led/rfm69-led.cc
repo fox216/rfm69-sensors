@@ -49,6 +49,15 @@ void loop() {
 				blink(LED, 5);
 		}
 	}
+	// report LED Status
+	// report last sensor change
+	if (millis() % SENSOR_REPORT_PERIOD == 0) {
+		// Send Status Message
+		// Simple form
+
+	}
+
+
 }
 
 
