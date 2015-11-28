@@ -43,7 +43,7 @@ void loop() {
 		switch(payload.MsgType) {
 			// Find matching message handler
 			case LedMsg:
-				i_LedMsg = *(I_LedMsg*)payload.msg;
+				i_LedMsg = *(_LedMsg*)payload.msg;
 				LedState(i_LedMsg.led, i_LedMsg.state);
 			default:
 				blink(LED, 5);
@@ -54,6 +54,8 @@ void loop() {
 	if (millis() % SENSOR_REPORT_PERIOD == 0) {
 		// Send Status Message
 		// Simple form
+		payload
+		radio.sendWithRetry(sMsg.NodeID, (const void*)(&sMsg.SerialPayload), sMsg.SerialPayloadSize);
 
 	}
 
