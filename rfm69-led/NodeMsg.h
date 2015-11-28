@@ -87,17 +87,17 @@ Payload payload;
 typedef struct { 
 // MESSAGE = 10
 	//struct __DefaultMsgHeader dmh;
-	byte 			led; 		// Pin number for the Led
+	byte 			led = 0; 		// Pin number for the Led
 	byte			state;		// Value of the PIN. (Value written to address)
 } _LedMsg;
-_LedMsg i_LedMsg;
+_LedMsg i_LedMsg o_LedMsg;
 
 
 
 typedef struct {
 	unsigned int 	mills; 		// Pin number for the Led
 } _MillsCount;
-_MillsCount o_MillsCount;
+_MillsCount o_MillsCount; 	// AKA Heartbeat
 
 
 #endif
