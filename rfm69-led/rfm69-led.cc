@@ -56,19 +56,20 @@ void loop() {
 		// Simple form
 		payload.MsgType = 20;
 		payload.MsgID = 99;
-		if (o_LedMsg.led != 0 ) {
-			// Send status of last LED set
-			o_LedMsg.led = i_LedMsg.led; 
-			o_LedMsg.state = digitalRead(o_LedMsg.led)
-			
-		} else {
+		if (!i_LedMsg.led) {
 			// Send LED status indicating nothing is set. 
 			// Status = Uninitialized....
 			o_LedMsg.led = 254; 
 			o_LedMsg.state = 254;
+		} else {
+			// Send status of last LED set
+			o_LedMsg.led = i_LedMsg.led; 
+			o_LedMsg.state = digitalRead(o_LedMsg.led);
+			
 		}
 		memcpy(payload.msg, &o_LedMsg, sizeof(o_LedMsg));
-		radio.sendWithRetry(sMsg.NodeID, (const void*)(&payload), sizeof(payload));
+		radio.sendWithRetry(GATEWAY, (const void*)(&payload), sizeof(payload));
+		blink(LED, 3);
 	}
 
 	if (millis() % SENSOR_HEARTBEAT == 0) {
@@ -76,12 +77,10 @@ void loop() {
 		payload.MsgID = 42;
 		o_MillsCount.mills = millis();
 		memcpy(payload.msg, &o_MillsCount, sizeof(o_MillsCount));
-		radio.sendWithRetry(sMsg.NodeID, (const void*)(&payload), sizeof(payload));	
+		radio.sendWithRetry(GATEWAY, (const void*)(&payload), sizeof(payload));	
+		blink(LED, 3);
 	}
 
 
 }
-
-
-
 

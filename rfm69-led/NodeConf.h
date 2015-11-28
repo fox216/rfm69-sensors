@@ -14,7 +14,8 @@
 |	
 */
 
-#define NODEID      42
+#define NODEID      43
+#define GATEWAY     1
 #define NETWORKID   50
 #define FREQUENCY   RF69_915MHZ //Match this with the version of your Moteino! (others: RF69_433MHZ, RF69_868MHZ)
 #define KEY         "thisIsEncryptKey" //has to be same 16 characters/bytes on all nodes, not more not less!
@@ -27,5 +28,7 @@
 //#define TRANSMITPERIOD 300000 // 5 min
 #define TRANSMITPERIOD 600000 // 10 min
 #define GET_SPKL_STATUS 35000 
+#define SENSOR_REPORT_PERIOD 30000 // 30 Seconds
+#define SENSOR_HEARTBEAT 310000 // 310 Seconds (5Min 10 Seconds)
 
 #endif
