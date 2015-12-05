@@ -5,7 +5,7 @@
 
 TARGET = $(notdir $(CURDIR))
 INSTALL_DIR = /swpkg/avr/arduino-1.0.5
-PORT = /dev/ttyBlue
+PORT = /dev/ttyLPL
 # used for older boards may be depricated...
 #AVRDUDE_PROGRAMMER = stk500v1
 # used with newer boards
