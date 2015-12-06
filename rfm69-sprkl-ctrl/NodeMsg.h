@@ -22,8 +22,10 @@
 
 
 typedef enum {
-	
-	
+	zoneCtrl 		= 10,    	// Control individual Zone
+	zoneGroupCtrl 	= 20, 		// Control predefined groups of Zones
+	sysCtrl 		= 30,		// System contol message (Override functions)
+	sysStatus		= 40,		// System status callback
 } MsgTypeIndex;
 
 typedef struct {
@@ -32,6 +34,13 @@ typedef struct {
   	byte 			msg[16];
 } Payload;
 Payload payload;
+
+
+typedef struct {
+	byte	zone;			// Zone to activate
+	byte	cycleSelect;	// length of time zone should run (Predefined times)
+} _zoneCtrl;
+_zoneCtrl i_zoneCtrl; // iunbound message type
 
 
 typedef struct { 

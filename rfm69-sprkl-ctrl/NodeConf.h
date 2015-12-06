@@ -1,4 +1,4 @@
-// !!!!  DEVICE CONFIGURATION SETTINGS  !!!!
+// !!!!  SPRINKLE - DEVICE CONFIGURATION SETTINGS  !!!!
 #ifndef NodeConf_h
 #define NodeConf_h
 
@@ -27,6 +27,43 @@
 #define GET_SPKL_STATUS 35000 
 #define SENSOR_REPORT_PERIOD 30000 // 30 Seconds
 #define SENSOR_HEARTBEAT 310000 // 310 Seconds (5Min 10 Seconds)
+
+
+/*
+Application Specific Structures
+*/
+
+typedef struct {
+	bool	sysActive;		// T/F system active 
+	byte 	currentZone;	// Current Zone Active
+	int		cycleCount;		// number of cycles run 
+	int		cycleLimit;		// max number of cycles to run
+} _SysState;
+_SysState sysState;
+
+typedef enum {
+	2min = 2,		// 2  Minutes
+	5min = 5,		// 5  Minutes
+	10min = 10,		// 10 Minutes
+} CycleSelect;
+
+typedef enum {
+	zone1 = 15, 	// Relay 0
+	zone2 = 16, 	// Relay 1
+	zone3 = 18, 	// Relay 2
+	zone4 = 3, 		// Relay 3
+	zone5 = 5, 		// Relay 4
+	zone6 = 14, 	// Relay 5
+	zone7 = 17, 	// Relay 6
+	zone8 = 19, 	// Relay 7
+	zone9 = 4, 		// Relay 8
+	zone10 = 6 	  	// Relay 9
+} SprinkleZoneIoMap;
+// List of all zones
+int zoneList[] = {
+	zone1, zone2, zone3, zone4, zone5, 
+	zone6, zone7, zone8, zone9, zone10
+};
 
 
 #endif
