@@ -42,7 +42,7 @@ typedef struct {
 } _zoneCtrl;
 _zoneCtrl i_zoneCtrl; // iunbound message type
 
-
+/*
 typedef struct { 
 // MESSAGE = 10
 	//struct __DefaultMsgHeader dmh;
@@ -51,26 +51,7 @@ typedef struct {
 } _SprklMsg;
 _SprklMsg	i__SprklMsg;
 _SprklMsg 	o__SprklMsg;
-
+*/
 
 #endif
 
-/*
-NOTES 
-	Sprinkler IO Map
-	PIN 	RELAY
-	---		-----
-	D3		3
-	D4 		8
-	D5 		4
-	D6 		9
-	D7		NC
-	D8 		NC
-	D14 	5
-	D15 	0
-	D16		1
-	D17 	6
-	D18		2
-	D19		7
-
-*/

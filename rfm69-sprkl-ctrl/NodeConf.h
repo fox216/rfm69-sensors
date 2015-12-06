@@ -27,6 +27,7 @@
 #define GET_SPKL_STATUS 35000 
 #define SENSOR_REPORT_PERIOD 30000 // 30 Seconds
 #define SENSOR_HEARTBEAT 310000 // 310 Seconds (5Min 10 Seconds)
+#define	SENSOR_SCAN_PERIOD 1000
 
 
 /*
@@ -42,10 +43,10 @@ typedef struct {
 _SysState sysState;
 
 typedef enum {
-	2min = 2,		// 2  Minutes
-	5min = 5,		// 5  Minutes
-	10min = 10,		// 10 Minutes
-} CycleSelect;
+	min2 = 2,		// 2  Minutes
+	min5 = 5,		// 5  Minutes
+	min10 = 10,		// 10 Minutes
+} enCycleSelect;
 
 typedef enum {
 	zone1 = 15, 	// Relay 0
@@ -58,7 +59,7 @@ typedef enum {
 	zone8 = 19, 	// Relay 7
 	zone9 = 4, 		// Relay 8
 	zone10 = 6 	  	// Relay 9
-} SprinkleZoneIoMap;
+} ZoneIoMap;
 // List of all zones
 int zoneList[] = {
 	zone1, zone2, zone3, zone4, zone5, 
@@ -67,3 +68,4 @@ int zoneList[] = {
 
 
 #endif
+
