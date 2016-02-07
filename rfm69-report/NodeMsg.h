@@ -84,7 +84,7 @@ typedef struct {
 	float 				fp; 	//[4] Float
 	double				db; 	//[4] double
 	char				sc;		//[1] Single character 
-} _LedMsg;
+} _ReportMsg;
 _ReportMsg i_ReportMsg;
 _ReportMsg o_ReportMsg;
 
