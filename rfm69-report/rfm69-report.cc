@@ -37,8 +37,12 @@ void loop() {
 		payload.MsgID = NODEID;
 		o_MillsCount.mills = millis();
 		memcpy(payload.msg, &o_MillsCount, sizeof(o_MillsCount));
-		radio.sendWithRetry(GATEWAY, (const void*)(&payload), sizeof(payload));	
-		delay(10);
+		// NOTE: sendWithRetry will send 3 attempts or until and ACK is received.
+		// Causing issue with NodeRed receiving 3 copies of the message.
+		// Changing to generic send method for testing... duh
+		//radio.sendWithRetry(GATEWAY, (const void*)(&payload), sizeof(payload));	
+		radio.send(GATEWAY, (const void*)(&payload), sizeof(payload));	
+		delay(100);
 		blink(LED, 3);
 	}
 
