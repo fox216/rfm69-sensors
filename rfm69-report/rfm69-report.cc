@@ -38,6 +38,7 @@ void loop() {
 		o_MillsCount.mills = millis();
 		memcpy(payload.msg, &o_MillsCount, sizeof(o_MillsCount));
 		radio.sendWithRetry(GATEWAY, (const void*)(&payload), sizeof(payload));	
+		delay(10);
 		blink(LED, 3);
 	}
 

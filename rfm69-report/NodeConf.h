@@ -24,7 +24,7 @@
 #define ACK_TIME    30  // # of ms to wait for an ack
 #define WAIT_TIME   1000
 #define TRANSMITPERIOD 600000 // 10 min
-#define SENSOR_REPORT_PERIOD 30000 // 30 Seconds
-#define SENSOR_HEARTBEAT 310000 // 310 Seconds (5Min 10 Seconds)
+#define SENSOR_REPORT_PERIOD 10000 // 10 Seconds
+#define SENSOR_HEARTBEAT 10000 // 10 Seconds 
 
 #endif
