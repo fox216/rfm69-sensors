@@ -34,8 +34,9 @@ void blink(byte PIN, int DELAY_MS) {
 void loop() {
 
 	if (millis() % SENSOR_HEARTBEAT == 0) {
+		// Send Heartbeat
+		payload.MsgID = millis();	
 		payload.MsgType = 10;
-		payload.MsgID = NODEID;	
 		o_MillsCount.mills = millis();
 		memcpy(payload.msg, &o_MillsCount, sizeof(o_MillsCount));
 		// NOTE: sendWithRetry will send 3 attempts or until and ACK is received.
@@ -49,14 +50,14 @@ void loop() {
 		runCount ++;
 	} else if (millis() % SENSOR1_UPDATE_FREQUENCY == 0){
 		// update interval for sensor1
-		
+		// Send sensor 1 
+		payload.MsgID = millis();
 		payload.MsgType = 20;
-		payload.MsgID = NODEID;
 		o_ReportMsg.bt = 42;
 		o_ReportMsg.si = runCount;
-		o_ReportMsg.ui = millis();
-		o_ReportMsg.fp = millis() / runCount;
-		o_ReportMsg.db = millis() / runCount + runCount;
+		o_ReportMsg.ui = runCount - 5;
+		o_ReportMsg.fp = runCount / 10;
+		o_ReportMsg.db = runCount / runCount + runCount;
 		o_ReportMsg.sc = 'K';
 		memcpy(payload.msg, &o_ReportMsg, sizeof(o_ReportMsg));
 		rxSize = PAYLOAD_HEADER_SIZE + sizeof(o_ReportMsg);

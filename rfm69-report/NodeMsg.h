@@ -50,7 +50,7 @@ Developer Notes
 //#define MAX_PAYLOAD_SIZE 59 // Package size in payload
 #define WATCHDOG_DEFAULT 10000 // 10 seconds used by node
 #define SENSOR1_UPDATE_FREQUENCY 35000 // Sensor 1 update frequency
-#define PAYLOAD_HEADER_SIZE 2
+#define PAYLOAD_HEADER_SIZE 5
 /*---------------------------------------------
 |	!! PKG Types !!
 |	Structure written to pkg[] array...
@@ -70,15 +70,24 @@ typedef enum {
 } MsgTypeIndex;
 
 typedef struct {
-	byte 			MsgID;	// Coordination ID to ack/nak (unknown if needed for applications)
-  	byte 			MsgType; // Message type - Struct Decode (10)
+	// Payload Header = 5
+  	byte 			MsgType; //[1] Message type - Struct Decode (10)
+	unsigned long 	MsgID;	 //[4] Coordination ID to ack/nak (unknown if needed for applications)
   	byte 			msg[24];
 } Payload;
 Payload payload;
 
 
+typedef struct {
+	// message Type = 10
+	// Size = 4
+	unsigned long 	mills; 		// [4] long 
+} _MillsCount;
+_MillsCount o_MillsCount; 	// AKA Heartbeat
+
 typedef struct { 
-	// MESSAGE = 10
+	// MESSAGE TYPE = 20
+	// Size = 14 
 	// Add collection message data types for node red parsing
 	byte				bt;		//[1] Byte			
 	int 				si;		//[2] Signed Int
@@ -91,11 +100,5 @@ _ReportMsg i_ReportMsg;
 _ReportMsg o_ReportMsg;
 
 
-
-typedef struct {
-	unsigned int 	mills; 		// Pin number for the Led
-} _MillsCount;
-_MillsCount o_MillsCount; 	// AKA Heartbeat
-
-
 #endif
+
