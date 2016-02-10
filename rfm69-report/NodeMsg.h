@@ -49,6 +49,7 @@ Developer Notes
 #define MAX_NETWORK_SIZE 61
 //#define MAX_PAYLOAD_SIZE 59 // Package size in payload
 #define WATCHDOG_DEFAULT 10000 // 10 seconds used by node
+#define PAYLOAD_HEADER_SIZE 2
 /*---------------------------------------------
 |	!! PKG Types !!
 |	Structure written to pkg[] array...

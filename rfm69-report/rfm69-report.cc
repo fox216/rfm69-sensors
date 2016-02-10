@@ -12,6 +12,7 @@ Report Sensor
 // declare radio
 RFM69 radio;
 bool wd_active = false;
+int rxSize;
 bool promiscuousMode = false; //set to 'true' to sniff all packets on the same network
 
 void setup() {
@@ -41,7 +42,8 @@ void loop() {
 		// Causing issue with NodeRed receiving 3 copies of the message.
 		// Changing to generic send method for testing... duh
 		//radio.sendWithRetry(GATEWAY, (const void*)(&payload), sizeof(payload));	
-		radio.send(GATEWAY, (const void*)(&payload), sizeof(payload));	
+		rxSize = PAYLOAD_HEADER_SIZE + sizeof(o_MillsCount);
+		radio.send(GATEWAY, (const void*)(&payload), rxSize);	
 		delay(100);
 		blink(LED, 3);
 	}
