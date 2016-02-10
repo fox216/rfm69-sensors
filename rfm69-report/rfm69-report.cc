@@ -35,7 +35,6 @@ void loop() {
 
 	if (millis() % SENSOR_HEARTBEAT == 0) {
 		// Send Heartbeat
-		payload.MsgID = millis();	
 		payload.MsgType = 10;
 		o_MillsCount.mills = millis();
 		memcpy(payload.msg, &o_MillsCount, sizeof(o_MillsCount));
@@ -51,7 +50,6 @@ void loop() {
 	} else if (millis() % SENSOR1_UPDATE_FREQUENCY == 0){
 		// update interval for sensor1
 		// Send sensor 1 
-		payload.MsgID = millis();
 		payload.MsgType = 20;
 		o_ReportMsg.bt = 42;
 		o_ReportMsg.si = runCount;

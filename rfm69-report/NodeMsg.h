@@ -50,7 +50,7 @@ Developer Notes
 //#define MAX_PAYLOAD_SIZE 59 // Package size in payload
 #define WATCHDOG_DEFAULT 10000 // 10 seconds used by node
 #define SENSOR1_UPDATE_FREQUENCY 35000 // Sensor 1 update frequency
-#define PAYLOAD_HEADER_SIZE 5
+#define PAYLOAD_HEADER_SIZE 1
 /*---------------------------------------------
 |	!! PKG Types !!
 |	Structure written to pkg[] array...
@@ -72,7 +72,6 @@ typedef enum {
 typedef struct {
 	// Payload Header = 5
   	byte 			MsgType; //[1] Message type - Struct Decode (10)
-	unsigned long 	MsgID;	 //[4] Coordination ID to ack/nak (unknown if needed for applications)
   	byte 			msg[24];
 } Payload;
 Payload payload;
