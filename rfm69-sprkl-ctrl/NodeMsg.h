@@ -12,13 +12,13 @@
 #define FRAME_BUFFER_SIZE 5
 #define MAX_SERIAL_SIZE 70 
 #define MAX_NETWORK_SIZE 61
+#define PAYLOAD_HEADER_SIZE 1
 
 /*---------------------------------------------
 |	!! PKG Types !!
 |	Structure written to pkg[] array...
 |
 */
-
 
 
 typedef enum {
@@ -29,29 +29,31 @@ typedef enum {
 } MsgTypeIndex;
 
 typedef struct {
-	byte 			MsgID;	// Coordination ID to ack/nak (unknown if needed for applications)
-  	byte 			MsgType; // Message type - Struct Decode (10)
-  	byte 			msg[16];
+  	byte 			MsgType; 	// Message type 
+  	byte 			msg[16]; 	// Message Payload
 } Payload;
 Payload payload;
 
 
 typedef struct {
-	byte	zone;			// Zone to activate
-	byte	cycleSelect;	// length of time zone should run (Predefined times)
+	// _zoneCtrl
+	// MESSAGE TYPE = 10
+	byte	zone;				// Zone to activate
+	byte	cycleSelect;		// length of time zone should run (Predefined times)
 } _zoneCtrl;
-_zoneCtrl i_zoneCtrl; // iunbound message type
+_zoneCtrl i_zoneCtrl; 			// inbound message
+_zoneCtrl o_zoneCtrl; 			// outbound message
 
-/*
+
 typedef struct { 
-// MESSAGE = 10
-	//struct __DefaultMsgHeader dmh;
-	byte 			zone; 	// Sprinkler Zone to control
-	byte			;		// Duration of sprinkle time
+	// _SprklMsg
+	// MESSAGE TYPE = 
+	byte 		zone; 			// Sprinkler Zone to control
+	byte		state;			// Duration of sprinkle time
 } _SprklMsg;
-_SprklMsg	i__SprklMsg;
-_SprklMsg 	o__SprklMsg;
-*/
+_SprklMsg	i_SprklMsg;
+_SprklMsg 	o_SprklMsg;
+
 
 #endif
 
