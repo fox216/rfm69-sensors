@@ -48,22 +48,29 @@ typedef enum {
 	min10 = 10,		// 10 Minutes
 } enCycleSelect;
 
+// Sprinkler Zone IO Map
 typedef enum {
-	zone1 = 15, 	// Relay 0
-	zone2 = 16, 	// Relay 1
-	zone3 = 18, 	// Relay 2
-	zone4 = 3, 		// Relay 3
-	zone5 = 5, 		// Relay 4
-	zone6 = 14, 	// Relay 5
-	zone7 = 17, 	// Relay 6
-	zone8 = 19, 	// Relay 7
-	zone9 = 4, 		// Relay 8
-	zone10 = 6 	  	// Relay 9
+	zone1 = 17, 	// Solid State Relay  1
+	zone2 = 4, 		// Solid State Relay  2
+	zone3 = 5, 		// Solid State Relay  3
+	zone4 = 6, 		// Solid State Relay  4
+	zone5 = 7, 		// Solid State Relay  5
+	zone6 = 8, 		// Solid State Relay  6
+	zone7 = 14, 	// Solid State Relay  7
+	zone8 = 15, 	// Solid State Relay  7
+	zone9 = 16, 	// Solid State Relay  9
 } ZoneIoMap;
-// List of all zones
+// Enum Zone List
 int zoneList[] = {
-	zone1, zone2, zone3, zone4, zone5, 
-	zone6, zone7, zone8, zone9, zone10
+	zone1, 
+	zone2, 
+	zone3, 
+	zone4, 
+	zone5, 
+	zone6, 
+	zone7, 
+	zone8, 
+	zone9
 };
 
 
