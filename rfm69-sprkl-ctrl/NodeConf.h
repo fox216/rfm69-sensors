@@ -34,20 +34,6 @@
 Application Specific Structures
 */
 
-typedef struct {
-	bool	sysActive;		// T/F system active 
-	byte 	currentZone;	// Current Zone Active
-	int		cycleCount;		// number of cycles run 
-	int		cycleLimit;		// max number of cycles to run
-} _SysState;
-_SysState sysState;
-
-typedef enum {
-	min2 = 2,		// 2  Minutes
-	min5 = 5,		// 5  Minutes
-	min10 = 10,		// 10 Minutes
-} enCycleSelect;
-
 // Sprinkler Zone IO Map
 typedef enum {
 	zone1 = 17, 	// Solid State Relay  1
