@@ -36,9 +36,11 @@ Application Specific Structures
 
 // Interal struct for program state.
 typedef struct {
-	bool	sysActive;		// T/F system active 
+	bool	sysActive;		// T/F system active
+	char 	sysCurState;		// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
 	byte 	currentZone;	// Current Zone Active
 	char 	progName;		// Store requested program
+	int 	zoneAcc;		// Zone accumulator (Index of zone set)
 	char 	systemState;	// Store system state
 	int		cycleCount;		// number of cycles run 
 	int		cycleLimit;		// max number of cycles to run
