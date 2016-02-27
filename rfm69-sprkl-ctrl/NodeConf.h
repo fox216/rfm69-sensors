@@ -23,6 +23,7 @@
 #define SERIAL_BAUD 115200
 #define ACK_TIME    30  // # of ms to wait for an ack
 #define WAIT_TIME   1000
+#define SPRKL_DWELL_TIME	200		// Set sprinkle dwell time
 #define TRANSMITPERIOD 600000 		// 10 min
 #define GET_SPKL_STATUS 35000 
 #define SENSOR_REPORT_PERIOD 30000 	// 30 Seconds
