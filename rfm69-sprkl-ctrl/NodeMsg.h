@@ -73,6 +73,10 @@ tyepdef struct {
 	// Name: runProg
 	// MESSAGE TYPE = 20
 	// MSG_SIZE = 1
+	// Program Table
+	// A: [A]ll zones in ZoneList
+	// F: [F]ront zones in f_zones
+	// B: [B]ack zones in b_zones
 	char 	program;			// Predefined set of zones in sequence
 } _runProg;
 _runProg	i_runProg;

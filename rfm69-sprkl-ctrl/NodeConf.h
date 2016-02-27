@@ -76,14 +76,14 @@ int zoneList[] = {
 
 // ----	Define programs	----
 // Front Zones
-int f_prog[] = {
+int f_zones[] = {
 	zone1, 
 	zone2, 
 	zone3, 
 	zone4, 
 };
 // Back Zones
-int b_prog[] = {
+int b_zones[] = {
 	zone5, 
 	zone6, 
 	zone7, 
