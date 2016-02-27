@@ -1,4 +1,4 @@
-/*********** SPRINKLER SENSOR MESSAGE STRUCTURE *******************
+/********2*** SPRINKLER SENSOR MESSAGE STRUCTURE *******************
 */
 
 #ifndef NodeMsg_h
@@ -9,6 +9,8 @@
 #else
 #include <Arduino.h>
 #endif
+
+// Message Constants
 #define FRAME_BUFFER_SIZE 5
 #define MAX_SERIAL_SIZE 70 
 #define MAX_NETWORK_SIZE 61
@@ -25,11 +27,13 @@
 
 
 typedef enum {
+	// INDEX of system message types
+	// used to switch between message types
 	zoneCtrl 		= 10,    	// Control individual Zone
-	zoneGroupCtrl 	= 20, 		// Control predefined groups of Zones
+	runProg 		= 20, 		// Control predefined groups of Zones
 	sysCtrl 		= 30,		// System contol message (Override functions)
 	sysStatus		= 40,		// System status callback
-} MsgTypeIndex;
+} MsgTypeIndex; 				
 
 typedef struct {
   	byte 			MsgType; 	// Message type 
@@ -37,19 +41,26 @@ typedef struct {
 } Payload;
 Payload payload;
 
+
 /*
 	Features
 	------------------------------------------------
-	zoneCtrl: 	Control single zone. Turn on single zone for default run time. 
-	runProg:	Run predefined sprinkle program based on control character (Example: Front[f], Back[b])
-	sysCtrl:	Pause / Resume system.
-	- Not Implemented sysStatus:	Query System status.
-	sysConfig:	Set system configuration vales [EPROM]. (Zone run time, Dwell time[Pause time between zones])
-*/
+	zoneCtrl: 	[I/O]Control single zone. Turn on single zone for default run time. 
+	runProg:	[I/O]Run predefined sprinkle program based on control character (Example: Front[f], Back[b])
+	sysCtrl:	[I/O]Pause / Resume system.
+	sysStatus:	[O] Send systems state Query System status.
+	sysConfig:	[I]Set system configuration vales . (Zone run time, Dwell time[Pause time between zones]) 
+				Returns sysStatus message.
 
+*/
+typedef enum {
+	min2 = 2,		// 2  Minutes
+	min5 = 5,		// 5  Minutes
+	min10 = 10,		// 10 Minutes
+} enCycleSelect;
 
 typedef struct {
-	// _zoneCtrl
+	// Name: zoneCtrl
 	// MESSAGE TYPE = 10
 	// MSG_SIZE = 2
 	byte	zone;				// Zone to activate
@@ -58,9 +69,16 @@ typedef struct {
 _zoneCtrl i_zoneCtrl; 			// inbound message
 _zoneCtrl o_zoneCtrl; 			// outbound message
 
+tyepdef struct {
+	// Name: runProg
+	// MESSAGE TYPE = 20
+	// MSG_SIZE = 1
+	char 	program;			// Predefined set of zones in sequence
+} _runProg;
+_runProg	i_runProg;
 
 typedef struct { 
-	// _SprklMsg
+	// Name: SprklMsg
 	// MESSAGE TYPE = 
 	// MSG_SIZE = 2 
 	byte 		zone; 			// Sprinkler Zone to control
@@ -72,20 +90,27 @@ _SprklMsg 	o_SprklMsg;
 tyepdef struct {
 	// _SysStatus
 	// MESSAGE Type = 40
+	// MSG_SIZE = 1
+	char 	state;				// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
+} _SysCtrl;
+_SysCtrl	i_SysCtrl;
+
+
+tyepdef struct {
+	// _SysStatus
+	// MESSAGE Type = 40
 	// MSG_SIZE = 
 	byte 	zone;  				// Current Zone
 	char 	state;				// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
-	byte	runTime;			// Zone run time
-	byte	dwellTime;			// Wait time between Zone Switch
+	char    progName;			// Current program
+	byte	runTime;			// ??? Zone run time
 	byte	percComplete;		// Percent complete (Range: 0 - 100) 
-} _SysCtrl;
-_SysStatus	i_SysStatus;
-_SysStatus	o_SysStatus;
+} _SysStatus;
+_SysStatus;	o_SysStatus;
 
-tyepdef struct {
-	char 	program;			// Predefined set of zones in sequence
-} _runProg;
-_runProg	i_runProg;
+
+
+
 
 #endif
 
