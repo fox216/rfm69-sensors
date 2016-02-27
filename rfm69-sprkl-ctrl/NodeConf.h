@@ -38,7 +38,8 @@ Application Specific Structures
 // Interal struct for program state.
 typedef struct {
 	bool	sysActive;		// T/F system active
-	char 	sysCurState;		// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
+	bool 	zoneActive;		// T/F zone status. Added for pause
+	char 	sysCurState;	// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
 	byte 	currentZone;	// Current Zone Active
 	char 	progName;		// Store requested program
 	int 	zoneAcc;		// Zone accumulator (Index of zone set)
@@ -62,6 +63,7 @@ typedef enum {
 	zone9 = 16, 	// Solid State Relay  9
 } ZoneIoMap;
 // Enum Zone List
+// TODO: Determine format for zones, consider byte (program memory)
 int zoneList[] = {
 	zone1, 
 	zone2, 

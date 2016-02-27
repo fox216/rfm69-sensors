@@ -79,6 +79,7 @@ void setup() {
 }
 
 void sendStatus() {
+	Serial.print("Sending status message! ");
 	// send status message 
 	payload.MsgType = 40;
 	o_SysStatus.zone 			= sysState.currentZone;
@@ -123,7 +124,7 @@ void loop() {
 				i_runProg = *(_runProg*)payload.msg;
 				// Process progarm logic in RUNTIME section
 				// Verify input value
-				switch(i_runProg.program; ) {
+				switch(i_runProg.program) {
 					// Valid program modes
 					case 'A':
 					case 'F':
@@ -133,8 +134,8 @@ void loop() {
 						Serial.println(sysState.progName);
 					break;
 					default:
-						Serial.print("Executing Program: ");
-						Serial.println(sysState.progName);
+						Serial.print("ERROR -> Invalid Program: ");
+						Serial.println(i_runProg.program);
 						sysState.progName = 'X';
 				}
 				break;
@@ -144,17 +145,28 @@ void loop() {
 				// Execute overrides to existig operation
 				
 				i_SysCtrl = *(_SysCtrl*)payload.msg;
-				// Set program
-				sysState.sysCurState = i_SysCtrl.state; 
+				// Set system state
+				
 
 				Serial.print("Setting Execution Mode: ");
 				Serial.println(sysState.sysCurState);
-				
-				
-
+				// Validate input
+				switch(i_SysCtrl.state) {
+					case 'R':
+					case 'C':
+					case 'P':
+						sysState.sysCurState = i_SysCtrl.state; 
+					default:
+						// State unchanged...
+						Serial.print("ERROR -> Invalid State: ");
+						Serial.println(i_SysCtrl.state);
+						// Place holder...
+						sysState.sysCurState = sysState.sysCurState;
+				}
 				break;
 			case sysStatus:
 				// #40
+				// Send status after receiving header. Ignores payload.
 				// System status message
 				// Used to communicate system state
 				Serial.print("Executing Message Type: ");

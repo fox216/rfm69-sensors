@@ -73,7 +73,9 @@ tyepdef struct {
 	// Name: runProg
 	// MESSAGE TYPE = 20
 	// MSG_SIZE = 1
+	//
 	// Program Table
+	// -----------------------------
 	// A: [A]ll zones in ZoneList
 	// F: [F]ront zones in f_zones
 	// B: [B]ack zones in b_zones
@@ -95,7 +97,14 @@ tyepdef struct {
 	// _SysStatus
 	// MESSAGE Type = 40
 	// MSG_SIZE = 1
-	char 	state;				// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
+	//
+	// Run State Table 
+	// -------------------------
+	// R: Set system state to [R]un, used to unpause sytem & and report status
+	// P: [P]ause running program. (Note: Pause state will time out after 30 minutes. Updates to cancel -> idle)
+	// I: Used to report state [I]dle state indicates sprinklers are off, system ready... (NOT SETABLE [word?])
+	// C: [C]ancel running program, used to disable run. Note: Intermediate state used to reset system.
+	char 	state;				
 } _SysCtrl;
 _SysCtrl	i_SysCtrl;
 
