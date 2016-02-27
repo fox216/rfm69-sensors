@@ -34,6 +34,18 @@
 Application Specific Structures
 */
 
+// Interal struct for program state.
+typedef struct {
+	bool	sysActive;		// T/F system active 
+	byte 	currentZone;	// Current Zone Active
+	char 	progName;		// Store requested program
+	char 	systemState;	// Store system state
+	int		cycleCount;		// number of cycles run 
+	int		cycleLimit;		// max number of cycles to run
+} _SysState;
+_SysState sysState;
+
+
 // Sprinkler Zone IO Map
 typedef enum {
 	zone1 = 17, 	// Solid State Relay  1
