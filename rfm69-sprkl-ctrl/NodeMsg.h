@@ -103,7 +103,7 @@ tyepdef struct {
 	byte 	zone;  				// Current Zone
 	char 	state;				// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
 	char    progName;			// Current program
-	byte	runTime;			// ??? Zone run time
+	//byte	runTime;			// ??? Zone run time
 	byte	percComplete;		// Percent complete (Range: 0 - 100) 
 } _SysStatus;
 _SysStatus;	o_SysStatus;
