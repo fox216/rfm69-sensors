@@ -60,8 +60,8 @@ void setCycle(byte CycleSelect) {
 			sysState.cycleLimit = 600;
 			break;
 		default:
-			// Set deafult value ot 30 seconds
-			sysState.cycleLimit = 30;
+			// Set deafult value ot 10 seconds
+			sysState.cycleLimit = 10;	// Set to 10 seconds for testing............
 	}
 	/* DEBUG
 	Serial.print("Cycle Limit: ");
@@ -69,11 +69,26 @@ void setCycle(byte CycleSelect) {
 	*/
 }
 void setup() {
+	// Setup Serial for Debug
 	Serial.begin(SERIAL_BAUD);
 	delay(10);
+	// Setup Radio
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.encrypt(KEY);
 	radio.promiscuous(promiscuousMode);
+}
+
+void sendStatus() {
+	// send status message 
+	payload.MsgType = 40;
+	o_SysStatus.zone 			= sysState.currentZone;
+	o_SysStatus.state 			= sysState.sysCurState; 
+	o_SysStatus.progName 		= sysState.progName;
+	o_SysStatus.percComplete 	= sysState.cycleCount / sysState.cycleLimit;
+
+	memcpy(payload.msg, &o_SysStatus, sizeof(o_SysStatus));
+	rxSize = PAYLOAD_HEADER_SIZE + sizeof(o_SysStatus);
+	radio.send(GATEWAY, (const void*)(&payload), rxSize);	
 }
 
 
@@ -86,6 +101,7 @@ void loop() {
 		switch(payload.MsgType) {
 			// Process message type 
 			case zoneCtrl:
+				// #10
 				// Take action on a single zone
 				// Extract zoneCtrl message
 				i_zoneCtrl = *(_zoneCtrl*)payload.msg;
@@ -96,21 +112,34 @@ void loop() {
 				setCycle(i_zoneCtrl.cycleSelect);
 				enableZone(i_zoneCtrl.zone);
 				break;
-			/*
-			case zoneGroupCtrl:
+			case runProg:
+				// #20
 				// Take action on a predefined group a zones
 				// Execute sequentially
-			
+				i_runProg = *(_runProg*)payload.msg;
+				Serial.print("Executing Message Type: ");
+				Serial.println(payload.MsgType);
+				break;
 			case: sysCtrl:
+				// #30
 				// System control message.
 				// Execute overrides to existig operation
+
+				Serial.print("Executing Message Type: ");
+				Serial.println(payload.MsgType);
+				break;
 			case sysStatus:
+				// #40
 				// System status message
 				// Used to communicate system state
+				Serial.print("Executing Message Type: ");
+				Serial.println(payload.MsgType);
+				sendStatus();
+				break;
 			default:
 				// Unknown command type
-			*/	// TODO: send error response
-
+				Serial.print("Unknown Message Type: ");
+				Serial.println(payload.MsgType);
 		}
 	}
 	// Scan Cycle
@@ -123,17 +152,17 @@ void loop() {
 			} else {
 				// increment cycle counter
 				sysState.cycleCount ++;
-
 				// Add dwell time delay to avoid counting all cycles
 				delay(10);
 			}
-			/*
-			DEBUG
+			
+
+			//DEBUG
 			Serial.print("Count: ");
 			Serial.print(sysState.cycleCount);
 			Serial.print(" Limit: ");
 			Serial.println(sysState.cycleLimit);
-			*/
+			
 		}
 	}
 }
