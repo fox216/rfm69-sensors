@@ -99,13 +99,17 @@ void loop() {
 		payload = *(Payload*)radio.DATA;
 		// Process message type (See Enum: MsgTypeIndex)
 		switch(payload.MsgType) {
-			// Process message type 
+			// Process message type
+			// DEBUG
+			Serial.print("Executing Message Type: ");
+			Serial.println(payload.MsgType); 
 			case zoneCtrl:
 				// #10
 				// Take action on a single zone
 				// Extract zoneCtrl message
 				i_zoneCtrl = *(_zoneCtrl*)payload.msg;
-				//disableAllZones();
+				sysState.progName = 'X'; // No program, single run
+
 				delay(20);
 				Serial.print("Cycle Select: ");
 				Serial.println(i_zoneCtrl.cycleSelect);
@@ -117,16 +121,27 @@ void loop() {
 				// Take action on a predefined group a zones
 				// Execute sequentially
 				i_runProg = *(_runProg*)payload.msg;
-				Serial.print("Executing Message Type: ");
-				Serial.println(payload.MsgType);
+				// Set program
+				sysState.progName = i_runProg.program; 
+				// DEBUG
+				Serial.print("Executing Program: ");
+				Serial.println(sysState.progName);
+				// Process progarm logic in RUNTIME section
 				break;
 			case: sysCtrl:
 				// #30
 				// System control message.
 				// Execute overrides to existig operation
+				
+				i_SysCtrl = *(_SysCtrl*)payload.msg;
+				// Set program
+				sysState.sysCurState = i_SysCtrl.state; 
 
-				Serial.print("Executing Message Type: ");
-				Serial.println(payload.MsgType);
+				Serial.print("Setting Execution Mode: ");
+				Serial.println(sysState.sysCurState);
+				//
+				
+
 				break;
 			case sysStatus:
 				// #40
@@ -138,11 +153,13 @@ void loop() {
 				break;
 			default:
 				// Unknown command type
-				Serial.print("Unknown Message Type: ");
+				Serial.print("ERROR -> Unknown Message Type: ");
 				Serial.println(payload.MsgType);
 		}
 	}
-	// Scan Cycle
+	//
+	// RUNTIME Section -> Scan Cycle
+	//
 	if (sysState.sysActive) {
 		// Only scan if system is active
 		if (millis() % SENSOR_SCAN_PERIOD == 0) {
