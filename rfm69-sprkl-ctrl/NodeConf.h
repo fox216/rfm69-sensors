@@ -23,11 +23,11 @@
 #define SERIAL_BAUD 115200
 #define ACK_TIME    30  // # of ms to wait for an ack
 #define WAIT_TIME   1000
-#define TRANSMITPERIOD 600000 // 10 min
+#define TRANSMITPERIOD 600000 		// 10 min
 #define GET_SPKL_STATUS 35000 
-#define SENSOR_REPORT_PERIOD 30000 // 30 Seconds
-#define SENSOR_HEARTBEAT 310000 // 310 Seconds (5Min 10 Seconds)
-#define	SENSOR_SCAN_PERIOD 1000
+#define SENSOR_REPORT_PERIOD 30000 	// 30 Seconds
+#define SENSOR_HEARTBEAT 310000 	// 310 Seconds (5Min 10 Seconds)
+#define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
 
 
 /*
@@ -58,6 +58,26 @@ int zoneList[] = {
 	zone8, 
 	zone9
 };
+
+// ----	Define programs	----
+// Front Zones
+int f_prog[] = {
+	zone1, 
+	zone2, 
+	zone3, 
+	zone4, 
+};
+// Back Zones
+int b_prog[] = {
+	zone5, 
+	zone6, 
+	zone7, 
+	zone8,
+	zone9, 
+};
+
+
+
 
 
 #endif
