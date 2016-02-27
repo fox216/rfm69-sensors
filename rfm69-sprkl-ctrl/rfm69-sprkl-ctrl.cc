@@ -37,8 +37,8 @@ void disableAllZones(){
 void enableZone(byte Zone) {
 	// verify all zones are off
 	disableAllZones();
-	// Dwell time
-	delay(200);
+	// Dwell time between zones
+	delay(SPRKL_DWELL_TIME);
 	// TODO Add switch to access only defined zones in ZoneIoMap
 	digitalWrite(Zone, HIGH);
 	// Enable cycle scanner
@@ -121,12 +121,22 @@ void loop() {
 				// Take action on a predefined group a zones
 				// Execute sequentially
 				i_runProg = *(_runProg*)payload.msg;
-				// Set program
-				sysState.progName = i_runProg.program; 
-				// DEBUG
-				Serial.print("Executing Program: ");
-				Serial.println(sysState.progName);
 				// Process progarm logic in RUNTIME section
+				// Verify input value
+				switch(i_runProg.program; ) {
+					// Valid program modes
+					case 'A':
+					case 'F':
+					case 'B':
+						sysState.progName = i_runProg.program; 
+						Serial.print("Executing Program: ");
+						Serial.println(sysState.progName);
+					break;
+					default:
+						Serial.print("Executing Program: ");
+						Serial.println(sysState.progName);
+						sysState.progName = 'X';
+				}
 				break;
 			case: sysCtrl:
 				// #30
@@ -139,7 +149,7 @@ void loop() {
 
 				Serial.print("Setting Execution Mode: ");
 				Serial.println(sysState.sysCurState);
-				//
+				
 				
 
 				break;
