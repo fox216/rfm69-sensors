@@ -27,7 +27,7 @@
 #define TRANSMITPERIOD 600000 		// 10 min
 #define GET_SPKL_STATUS 35000 
 #define SENSOR_REPORT_PERIOD 30000 	// 30 Seconds
-#define SENSOR_HEARTBEAT 310000 	// 310 Seconds (5Min 10 Seconds)
+#define SENSOR_HEARTBEAT 120500 	// Send sensor haertbeat message (15 Min & 500 ms)
 #define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
 
 
@@ -51,6 +51,7 @@ _SysState sysState;
 
 
 // Sprinkler Zone IO Map
+// Abstraction for zone map
 typedef enum {
 	zone1 = 17, 	// Solid State Relay  1
 	zone2 = 4, 		// Solid State Relay  2

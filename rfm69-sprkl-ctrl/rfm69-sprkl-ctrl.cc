@@ -105,7 +105,7 @@ void loop() {
 			Serial.print("Executing Message Type: ");
 			Serial.println(payload.MsgType); 
 			case zoneCtrl:
-				// #10
+				// #20
 				// Take action on a single zone
 				// Extract zoneCtrl message
 				i_zoneCtrl = *(_zoneCtrl*)payload.msg;
@@ -118,7 +118,7 @@ void loop() {
 				enableZone(i_zoneCtrl.zone);
 				break;
 			case runProg:
-				// #20
+				// #30
 				// Take action on a predefined group a zones
 				// Execute sequentially
 				i_runProg = *(_runProg*)payload.msg;
@@ -140,14 +140,11 @@ void loop() {
 				}
 				break;
 			case: sysCtrl:
-				// #30
+				// #40
 				// System control message.
 				// Execute overrides to existig operation
-				
 				i_SysCtrl = *(_SysCtrl*)payload.msg;
 				// Set system state
-				
-
 				Serial.print("Setting Execution Mode: ");
 				Serial.println(sysState.sysCurState);
 				// Validate input
@@ -165,7 +162,7 @@ void loop() {
 				}
 				break;
 			case sysStatus:
-				// #40
+				// #50
 				// Send status after receiving header. Ignores payload.
 				// System status message
 				// Used to communicate system state
@@ -203,5 +200,12 @@ void loop() {
 			Serial.println(sysState.cycleLimit);
 			
 		}
+	}
+	// Send heartbeat
+	if (millis() % SENSOR_HEARTBEAT == 0) {
+		o_heartbeat.mills = millis();
+		memcpy(payload.msg, &o_heartbeat, sizeof(o_heartbeat));
+		rxSize = PAYLOAD_HEADER_SIZE + sizeof(o_heartbeat);
+		radio.send(GATEWAY, (const void*)(&payload), rxSize);	
 	}
 }

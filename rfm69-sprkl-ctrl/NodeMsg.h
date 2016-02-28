@@ -29,10 +29,11 @@
 typedef enum {
 	// INDEX of system message types
 	// used to switch between message types
-	zoneCtrl 		= 10,    	// Control individual Zone
-	runProg 		= 20, 		// Control predefined groups of Zones
-	sysCtrl 		= 30,		// System contol message (Override functions)
-	sysStatus		= 40,		// System status callback
+	heatrbeat		= 10,
+	zoneCtrl 		= 20,    	// Control individual Zone
+	runProg 		= 30, 		// Control predefined groups of Zones
+	sysCtrl 		= 40,		// System contol message (Override functions)
+	sysStatus		= 50,		// System status callback
 } MsgTypeIndex; 				
 
 typedef struct {
@@ -69,7 +70,7 @@ typedef struct {
 _zoneCtrl i_zoneCtrl; 			// inbound message
 _zoneCtrl o_zoneCtrl; 			// outbound message
 
-tyepdef struct {
+typedef struct {
 	// Name: runProg
 	// MESSAGE TYPE = 20
 	// MSG_SIZE = 1
@@ -93,7 +94,7 @@ typedef struct {
 _SprklMsg	i_SprklMsg;
 _SprklMsg 	o_SprklMsg;
 
-tyepdef struct {
+typedef struct {
 	// _SysStatus
 	// MESSAGE Type = 40
 	// MSG_SIZE = 1
@@ -109,7 +110,7 @@ tyepdef struct {
 _SysCtrl	i_SysCtrl;
 
 
-tyepdef struct {
+typedef struct {
 	// _SysStatus
 	// MESSAGE Type = 40
 	// MSG_SIZE = 
@@ -121,8 +122,10 @@ tyepdef struct {
 } _SysStatus;
 _SysStatus;	o_SysStatus;
 
-
-
+typedef struct {
+	unsigned long 	mills; 		// [4] long Heartbeat
+} _heartbeat;
+_heartbeat	o_heartbeat;
 
 
 #endif
