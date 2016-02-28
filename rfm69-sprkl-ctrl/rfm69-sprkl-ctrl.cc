@@ -49,6 +49,15 @@ void enableZone(byte Zone) {
 
 }
 
+void blink(byte PIN, int DELAY_MS) {
+	pinMode(PIN, OUTPUT);
+	//times = times * 2;
+	digitalWrite(PIN, HIGH);
+	delay(DELAY_MS);
+	digitalWrite(PIN, LOW);
+}
+
+
 void setCycle(byte CycleSelect) {
 	switch(CycleSelect) {
 		case min2:
@@ -204,9 +213,11 @@ void loop() {
 	}
 	// Send heartbeat
 	if (millis() % SENSOR_HEARTBEAT == 0) {
+		payload.MsgType = 10;
 		o_heartbeat.mills = millis();
 		memcpy(payload.msg, &o_heartbeat, sizeof(o_heartbeat));
 		rxSize = PAYLOAD_HEADER_SIZE + sizeof(o_heartbeat);
 		radio.send(GATEWAY, (const void*)(&payload), rxSize);	
+		blink(LED, 150);
 	}
 }
