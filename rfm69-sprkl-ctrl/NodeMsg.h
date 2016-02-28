@@ -29,7 +29,7 @@
 typedef enum {
 	// INDEX of system message types
 	// used to switch between message types
-	heatrbeat		= 10,
+	heartbeat		= 10,
 	zoneCtrl 		= 20,    	// Control individual Zone
 	runProg 		= 30, 		// Control predefined groups of Zones
 	sysCtrl 		= 40,		// System contol message (Override functions)

@@ -91,13 +91,14 @@ void setup() {
 void sendStatus() {
 	Serial.print("Sending status message! ");
 	// send status message 
-	payload.MsgType = 40;
+	payload.MsgType = sysStatus;
 	o_SysStatus.zone 			= sysState.currentZone;
 	o_SysStatus.state 			= sysState.sysCurState; 
 	o_SysStatus.progName 		= sysState.progName;
 	o_SysStatus.percComplete 	= sysState.cycleCount / sysState.cycleLimit;
-
+	// Pack payload into array for transmission
 	memcpy(payload.msg, &o_SysStatus, sizeof(o_SysStatus));
+	// Calc payload size
 	rxSize = PAYLOAD_HEADER_SIZE + sizeof(o_SysStatus);
 	radio.send(GATEWAY, (const void*)(&payload), rxSize);	
 }
@@ -146,7 +147,9 @@ void loop() {
 					default:
 						Serial.print("ERROR -> Invalid Program: ");
 						Serial.println(i_runProg.program);
-						sysState.progName = 'X';
+						// Set program name to reserved, invalid type.
+						// Used by processing logic to exclude program run.
+						sysState.progName = 'x';
 				}
 				break;
 			case sysCtrl:
@@ -211,9 +214,11 @@ void loop() {
 			
 		}
 	}
-	// Send heartbeat
+	// Send heartbeat message
+	// Keep alive message for gateway.
 	if (millis() % SENSOR_HEARTBEAT == 0) {
-		payload.MsgType = 10;
+		// Set payload
+		payload.MsgType = heartbeat;
 		o_heartbeat.mills = millis();
 		memcpy(payload.msg, &o_heartbeat, sizeof(o_heartbeat));
 		rxSize = PAYLOAD_HEADER_SIZE + sizeof(o_heartbeat);
