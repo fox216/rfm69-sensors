@@ -36,9 +36,6 @@ void setup() {
 	disableAllZones();
 }
 
-
-
-
 void enableZone(byte Zone) {
 	// verify all zones are off
 	disableAllZones();
@@ -61,10 +58,8 @@ void blink(byte PIN, int DELAY_MS) {
 	digitalWrite(PIN, LOW);
 }
 
-
 bool getNextZone() {
 	// returns true next zone is set
-
 	switch(sysState.progName) {
 		case 'A':
 			if (sysState.runProgram) {
@@ -97,7 +92,6 @@ bool getNextZone() {
 				enableZone(f_zones[sysState.zoneAcc]);
 				return true;
 			}
-
 		break;
 		case 'B':
 			if (sysState.runProgram) {
@@ -116,8 +110,8 @@ bool getNextZone() {
 			}
 		break;
 	} 
-}
 
+}
 
 void setCycle(byte CycleSelect) {
 	switch(CycleSelect) {
@@ -138,10 +132,6 @@ void setCycle(byte CycleSelect) {
 	Serial.print("Cycle Limit: ");
 	Serial.println(sysState.cycleLimit);
 	*/
-}
-
-void setActiveState(){
-	sysState.sysActive = true;
 }
 
 void sendStatus() {
@@ -208,8 +198,6 @@ void loop() {
 						sysState.zoneAcc = 0;
 						// Call get next zone 
 						getNextZone();
-
-
 						if (DEBUG_ENABLED == 1) {
 							Serial.print("Executing Program: ");
 							Serial.println(sysState.progName);
