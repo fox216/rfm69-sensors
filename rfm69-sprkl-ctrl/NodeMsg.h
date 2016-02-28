@@ -120,7 +120,7 @@ typedef struct {
 	//byte	runTime;			// ??? Zone run time
 	byte	percComplete;		// Percent complete (Range: 0 - 100) 
 } _SysStatus;
-_SysStatus;	o_SysStatus;
+_SysStatus	o_SysStatus;
 
 typedef struct {
 	unsigned long 	mills; 		// [4] long Heartbeat

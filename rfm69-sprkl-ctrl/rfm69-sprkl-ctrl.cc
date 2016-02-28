@@ -10,6 +10,7 @@ Controls in-ground sprinkler system
 RFM69 radio;
 bool wd_active = false;
 bool promiscuousMode = false; //set to 'true' to sniff all packets on the same network
+int rxSize;
 
 /*
 	Turn on zone10 - Pin 6
@@ -139,7 +140,7 @@ void loop() {
 						sysState.progName = 'X';
 				}
 				break;
-			case: sysCtrl:
+			case sysCtrl:
 				// #40
 				// System control message.
 				// Execute overrides to existig operation
