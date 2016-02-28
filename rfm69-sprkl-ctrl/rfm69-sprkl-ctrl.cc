@@ -19,6 +19,16 @@ void disableAllZones(){
   }
   sysState.zoneActive = false;
 }
+
+void blink(byte PIN, int DELAY_MS) {
+	pinMode(PIN, OUTPUT);
+	//times = times * 2;
+	digitalWrite(PIN, HIGH);
+	delay(DELAY_MS);
+	digitalWrite(PIN, LOW);
+}
+
+
 void setup() {
 	// Setup Serial for Debug
 	if (DEBUG_ENABLED == 1){
@@ -33,7 +43,13 @@ void setup() {
 	// Init sysState
 	sysState.runProgram = false;
 	// Start system with all zones off following reboot
+	// Note: Programmer could leave certain bits enabled following a new program load 
+	// Disable all zones on startup
 	disableAllZones();
+	// Blink LED on init.
+	blink(LED, 150);
+	delay(500);
+	blink(LED, 150);
 }
 
 void enableZone(byte Zone) {
@@ -47,16 +63,8 @@ void enableZone(byte Zone) {
 	sysState.zoneActive = true;
 	// Reset Cycle Counter
 	sysState.cycleCount = 0;
-
 }
 
-void blink(byte PIN, int DELAY_MS) {
-	pinMode(PIN, OUTPUT);
-	//times = times * 2;
-	digitalWrite(PIN, HIGH);
-	delay(DELAY_MS);
-	digitalWrite(PIN, LOW);
-}
 
 bool getNextZone() {
 	// returns true next zone is set
@@ -163,6 +171,8 @@ void loop() {
 				Serial.print("Executing Message Type: ");
 				Serial.println(payload.MsgType);
 			} 
+			//
+			// @@ ZoneControl - Activate Single Zone
 			case zoneCtrl:
 				// #20
 				// Take action on a single zone
@@ -181,6 +191,8 @@ void loop() {
 				// set output HIGH, enabling system
 				enableZone(i_zoneCtrl.zone);
 				break;
+			//
+			// @@ Run Program - Start predefined program 
 			case runProg:
 				// #30
 				// Take action on a predefined group a zones
@@ -213,6 +225,8 @@ void loop() {
 						sysState.runProgram = false;
 				}
 				break;
+			//
+			// @@ System Control - Set operational states
 			case sysCtrl:
 				// #40
 				// System control message.
@@ -239,6 +253,8 @@ void loop() {
 						sysState.sysCurState = sysState.sysCurState;
 				}
 				break;
+			//
+			// @@ System Status - Report system status to gateway
 			case sysStatus:
 				// #50
 				// Send status after receiving header. Ignores payload.
@@ -250,6 +266,8 @@ void loop() {
 				}
 				sendStatus();
 				break;
+			//
+			// @@ Unknown request
 			default:
 				// Unknown command type
 				if (DEBUG_ENABLED == 1) {
