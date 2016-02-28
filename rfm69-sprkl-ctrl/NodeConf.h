@@ -30,7 +30,7 @@
 #define SENSOR_HEARTBEAT 120500 	// Send sensor haertbeat message (15 Min & 500 ms)
 //#define SENSOR_HEARTBEAT 3000 	// Send sensor haertbeat message (3 seconds for DEBUG)
 #define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
-
+#define DEBUG_ENABLED = 1
 
 /*
 Application Specific Structures

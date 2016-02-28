@@ -12,8 +12,7 @@
 
 // Message Constants
 #define FRAME_BUFFER_SIZE 5
-#define MAX_SERIAL_SIZE 70 
-#define MAX_NETWORK_SIZE 61
+#define MAX_NETWORK_SIZE 16
 #define PAYLOAD_HEADER_SIZE 1
 
 /*---------------------------------------------
@@ -38,7 +37,7 @@ typedef enum {
 
 typedef struct {
   	byte 			MsgType; 	// Message type 
-  	byte 			msg[16]; 	// Message Payload
+  	byte 			msg[MAX_NETWORK_SIZE]; 	// Message Payload
 } Payload;
 Payload payload;
 

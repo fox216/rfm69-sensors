@@ -12,20 +12,19 @@ bool wd_active = false;
 bool promiscuousMode = false; //set to 'true' to sniff all packets on the same network
 int rxSize;
 
-/*
-	Turn on zone10 - Pin 6
-	Node = 75
-	\x00\x4b\x04\x05\x0a\x0f\x01 	# zone 1 (Pin 6) 30 seconds
-	\x00\x4b\x04\x05\x0a\x10\x01 	# zone 2 (Pin 6) 30 seconds
-	\x00\x4b\x04\x05\x0a\x12\x01 	# zone 3 (Pin 6) 30 seconds
-	\x00\x4b\x04\x05\x0a\x03\x01 	# zone 4 (Pin 6) 30 seconds
-	\x00\x4b\x04\x05\x0a\x05\x01 	# zone 5 (Pin 6) 30 seconds
-	\x00\x4b\x04\x05\x0a\x0e\x01 	# zone 6 (Pin 6) 30 seconds
-	\x00\x4b\x04\x05\x0a\x11\x01 	# zone 7 (Pin 6) 30 seconds
-	\x00\x4b\x04\x05\x0a\x13\x01 	# zone 8 (Pin 6) 30 seconds
-	\x00\x4b\x04\x05\x0a\x04\x01 	# zone 9 (Pin 6) 30 seconds
-	\x00\x4b\x04\x05\x0a\x06\x01 	# zone 10 (Pin 6) 30 seconds
-*/
+
+void setup() {
+	// Setup Serial for Debug
+	if (DEBUG_ENABLED == 1){
+		Serial.begin(SERIAL_BAUD);
+		delay(10);
+	}
+	// Setup Radio
+	radio.initialize(FREQUENCY,NODEID,NETWORKID);
+	radio.encrypt(KEY);
+	radio.promiscuous(promiscuousMode);
+}
+
 
 void disableAllZones(){
   // Turn all zones off
@@ -78,15 +77,6 @@ void setCycle(byte CycleSelect) {
 	Serial.println(sysState.cycleLimit);
 	*/
 }
-void setup() {
-	// Setup Serial for Debug
-	Serial.begin(SERIAL_BAUD);
-	delay(10);
-	// Setup Radio
-	radio.initialize(FREQUENCY,NODEID,NETWORKID);
-	radio.encrypt(KEY);
-	radio.promiscuous(promiscuousMode);
-}
 
 void sendStatus() {
 	Serial.print("Sending status message! ");
@@ -112,9 +102,11 @@ void loop() {
 		// Process message type (See Enum: MsgTypeIndex)
 		switch(payload.MsgType) {
 			// Process message type
-			// DEBUG
-			Serial.print("Executing Message Type: ");
-			Serial.println(payload.MsgType); 
+			if (DEBUG_ENABLED == 1) {
+				// DEBUG
+				Serial.print("Executing Message Type: ");
+				Serial.println(payload.MsgType);
+			} 
 			case zoneCtrl:
 				// #20
 				// Take action on a single zone
@@ -123,8 +115,10 @@ void loop() {
 				sysState.progName = 'X'; // No program, single run
 
 				delay(20);
-				Serial.print("Cycle Select: ");
-				Serial.println(i_zoneCtrl.cycleSelect);
+				if (DEBUG_ENABLED == 1) {
+					Serial.print("Cycle Select: ");
+					Serial.println(i_zoneCtrl.cycleSelect);
+				}	
 				setCycle(i_zoneCtrl.cycleSelect);
 				enableZone(i_zoneCtrl.zone);
 				break;
@@ -141,12 +135,16 @@ void loop() {
 					case 'F':
 					case 'B':
 						sysState.progName = i_runProg.program; 
-						Serial.print("Executing Program: ");
-						Serial.println(sysState.progName);
+						if (DEBUG_ENABLED == 1) {
+							Serial.print("Executing Program: ");
+							Serial.println(sysState.progName);
+						}
 					break;
 					default:
-						Serial.print("ERROR -> Invalid Program: ");
-						Serial.println(i_runProg.program);
+						if (DEBUG_ENABLED == 1) {
+							Serial.print("ERROR -> Invalid Program: ");
+							Serial.println(i_runProg.program);
+						}
 						// Set program name to reserved, invalid type.
 						// Used by processing logic to exclude program run.
 						sysState.progName = 'x';
@@ -158,8 +156,10 @@ void loop() {
 				// Execute overrides to existig operation
 				i_SysCtrl = *(_SysCtrl*)payload.msg;
 				// Set system state
-				Serial.print("Setting Execution Mode: ");
-				Serial.println(sysState.sysCurState);
+				if (DEBUG_ENABLED == 1) {
+					Serial.print("Setting Execution Mode: ");
+					Serial.println(sysState.sysCurState);
+				}
 				// Validate input
 				switch(i_SysCtrl.state) {
 					case 'R':
@@ -168,8 +168,10 @@ void loop() {
 						sysState.sysCurState = i_SysCtrl.state; 
 					default:
 						// State unchanged...
-						Serial.print("ERROR -> Invalid State: ");
-						Serial.println(i_SysCtrl.state);
+						if (DEBUG_ENABLED == 1) {
+							Serial.print("ERROR -> Invalid State: ");
+							Serial.println(i_SysCtrl.state);
+						}
 						// Place holder...
 						sysState.sysCurState = sysState.sysCurState;
 				}
@@ -179,14 +181,18 @@ void loop() {
 				// Send status after receiving header. Ignores payload.
 				// System status message
 				// Used to communicate system state
-				Serial.print("Executing Message Type: ");
-				Serial.println(payload.MsgType);
+				if (DEBUG_ENABLED == 1) {
+					Serial.print("Executing Message Type: ");
+					Serial.println(payload.MsgType);
+				}
 				sendStatus();
 				break;
 			default:
 				// Unknown command type
-				Serial.print("ERROR -> Unknown Message Type: ");
-				Serial.println(payload.MsgType);
+				if (DEBUG_ENABLED == 1) {
+					Serial.print("ERROR -> Unknown Message Type: ");
+					Serial.println(payload.MsgType);
+				}
 		}
 	}
 	//
@@ -201,21 +207,24 @@ void loop() {
 			} else {
 				// increment cycle counter
 				sysState.cycleCount ++;
-				// Add dwell time delay to avoid counting all cycles
+				// Add delay time delay to avoid counting all cycles
 				delay(10);
 			}
 			
-
-			//DEBUG
-			Serial.print("Count: ");
-			Serial.print(sysState.cycleCount);
-			Serial.print(" Limit: ");
-			Serial.println(sysState.cycleLimit);
+			if (DEBUG_ENABLED == 1) {
+				//DEBUG
+				Serial.print("Count: ");
+				Serial.print(sysState.cycleCount);
+				Serial.print(" Limit: ");
+				Serial.println(sysState.cycleLimit);
+			}
 			
 		}
 	}
+	//
 	// Send heartbeat message
 	// Keep alive message for gateway.
+	//
 	if (millis() % SENSOR_HEARTBEAT == 0) {
 		// Set payload
 		payload.MsgType = heartbeat;
