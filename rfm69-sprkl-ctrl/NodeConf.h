@@ -22,12 +22,9 @@
 #define LED         9
 #define SERIAL_BAUD 115200
 #define ACK_TIME    30  // # of ms to wait for an ack
-#define WAIT_TIME   1000
 #define SPRKL_DWELL_TIME	200		// Set sprinkle dwell time
-#define TRANSMITPERIOD 600000 		// 10 min
 #define GET_SPKL_STATUS 35000 
-#define SENSOR_REPORT_PERIOD 30000 	// 30 Seconds
-#define SENSOR_HEARTBEAT 120500 	// Send sensor haertbeat message (15 Min & 500 ms)
+#define SENSOR_HEARTBEAT 900250 	// Send sensor haertbeat message (15 Min & 250 ms)
 //#define SENSOR_HEARTBEAT 3000 	// Send sensor haertbeat message (3 seconds for DEBUG)
 #define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
 #define DEBUG_ENABLED  1
@@ -40,10 +37,11 @@ Application Specific Structures
 typedef struct {
 	bool	sysActive;		// T/F system active
 	bool 	zoneActive;		// T/F zone status. Added for pause
+	bool 	runProgram;		// T/F set if program configured to run
 	char 	sysCurState;	// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
-	byte 	currentZone;	// Current Zone Active
 	char 	progName;		// Store requested program
-	int 	zoneAcc;		// Zone accumulator (Index of zone set)
+	byte 	currentZone;	// Current Zone Active
+	byte 	zoneAcc;		// Zone accumulator (Index of zone set)
 	char 	systemState;	// Store system state
 	int		cycleCount;		// number of cycles run 
 	int		cycleLimit;		// max number of cycles to run
@@ -64,9 +62,34 @@ typedef enum {
 	zone8 = 15, 	// Solid State Relay  7
 	zone9 = 16, 	// Solid State Relay  9
 } ZoneIoMap;
+
+typedef enum {
+	z1 = 1,
+	z2 = 2,
+	z3 = 3,
+	z4 = 4,
+	z5 = 5,
+	z6 = 6,
+	z7 = 7,
+	z8 = 8,
+	z9 = 9
+} ZoneReportMap;
+
+byte zoneReportList[] = {
+	z1,
+	z2,
+	z3,
+	z4,
+	z5,
+	z6,
+	z7,
+	z8,
+	z9
+};
+
 // Enum Zone List
 // TODO: Determine format for zones, consider byte (program memory)
-int zoneList[] = {
+byte zoneList[] = {
 	zone1, 
 	zone2, 
 	zone3, 
@@ -80,19 +103,19 @@ int zoneList[] = {
 
 // ----	Define programs	----
 // Front Zones
-int f_zones[] = {
+byte f_zones[] = {
 	zone1, 
 	zone2, 
 	zone3, 
 	zone4, 
 };
 // Back Zones
-int b_zones[] = {
+byte b_zones[] = {
 	zone5, 
 	zone6, 
 	zone7, 
 	zone8,
-	zone9, 
+	zone9 
 };
 
 

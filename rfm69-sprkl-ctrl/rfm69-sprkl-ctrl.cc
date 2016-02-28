@@ -12,7 +12,13 @@ bool wd_active = false;
 bool promiscuousMode = false; //set to 'true' to sniff all packets on the same network
 int rxSize;
 
-
+void disableAllZones(){
+  // Turn all zones off
+  for (int x = 0; x < sizeof(zoneList); x++) {
+    digitalWrite(zoneList[x], LOW);
+  }
+  sysState.zoneActive = false;
+}
 void setup() {
 	// Setup Serial for Debug
 	if (DEBUG_ENABLED == 1){
@@ -23,16 +29,15 @@ void setup() {
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.encrypt(KEY);
 	radio.promiscuous(promiscuousMode);
+	//
+	// Init sysState
+	sysState.runProgram = false;
+	// Start system with all zones off following reboot
+	disableAllZones();
 }
 
 
-void disableAllZones(){
-  // Turn all zones off
-  for (int x = 0; x < sizeof(zoneList); x++) {
-    digitalWrite(zoneList[x], LOW);
-  }
-  sysState.zoneActive = false;
-}
+
 
 void enableZone(byte Zone) {
 	// verify all zones are off
@@ -57,6 +62,63 @@ void blink(byte PIN, int DELAY_MS) {
 }
 
 
+bool getNextZone() {
+	// returns true next zone is set
+
+	switch(sysState.progName) {
+		case 'A':
+			if (sysState.runProgram) {
+				// determine if next is longer than array 
+				sysState.zoneAcc ++;
+				if (sysState.zoneAcc >= sizeof(zoneList)) {
+					return false;
+				} else {
+					enableZone(zoneList[sysState.zoneAcc]);
+					return true;
+				}
+			} else {
+				sysState.runProgram = true;
+				enableZone(zoneList[sysState.zoneAcc]);
+				return true;
+			}
+		break;
+		case 'F':
+			if (sysState.runProgram) {
+				// determine if next is longer than array 
+				sysState.zoneAcc ++;
+				if (sysState.zoneAcc >= sizeof(f_zones)) {
+					return false;
+				} else {
+					enableZone(f_zones[sysState.zoneAcc]);
+					return true;
+				}
+			} else {
+				sysState.runProgram = true;
+				enableZone(f_zones[sysState.zoneAcc]);
+				return true;
+			}
+
+		break;
+		case 'B':
+			if (sysState.runProgram) {
+				// determine if next is longer than array 
+				sysState.zoneAcc ++;
+				if (sysState.zoneAcc >= sizeof(b_zones)) {
+					return false;
+				} else {
+					enableZone(b_zones[sysState.zoneAcc]);
+					return true;
+				}
+			} else {
+				sysState.runProgram = true;
+				enableZone(b_zones[sysState.zoneAcc]);
+				return true;
+			}
+		break;
+	} 
+}
+
+
 void setCycle(byte CycleSelect) {
 	switch(CycleSelect) {
 		case min2:
@@ -76,6 +138,10 @@ void setCycle(byte CycleSelect) {
 	Serial.print("Cycle Limit: ");
 	Serial.println(sysState.cycleLimit);
 	*/
+}
+
+void setActiveState(){
+	sysState.sysActive = true;
 }
 
 void sendStatus() {
@@ -112,14 +178,17 @@ void loop() {
 				// Take action on a single zone
 				// Extract zoneCtrl message
 				i_zoneCtrl = *(_zoneCtrl*)payload.msg;
-				sysState.progName = 'X'; // No program, single run
+				// No program, single run
+				sysState.runProgram = false; 
 
 				delay(20);
 				if (DEBUG_ENABLED == 1) {
 					Serial.print("Cycle Select: ");
 					Serial.println(i_zoneCtrl.cycleSelect);
-				}	
+				}
+				// set cycle time for on-demand run	
 				setCycle(i_zoneCtrl.cycleSelect);
+				// set output HIGH, enabling system
 				enableZone(i_zoneCtrl.zone);
 				break;
 			case runProg:
@@ -135,6 +204,12 @@ void loop() {
 					case 'F':
 					case 'B':
 						sysState.progName = i_runProg.program; 
+						// Call Start Program 
+						sysState.zoneAcc = 0;
+						// Call get next zone 
+						getNextZone();
+
+
 						if (DEBUG_ENABLED == 1) {
 							Serial.print("Executing Program: ");
 							Serial.println(sysState.progName);
@@ -147,7 +222,7 @@ void loop() {
 						}
 						// Set program name to reserved, invalid type.
 						// Used by processing logic to exclude program run.
-						sysState.progName = 'x';
+						sysState.runProgram = false;
 				}
 				break;
 			case sysCtrl:
@@ -213,11 +288,29 @@ void loop() {
 	//
 	if (sysState.sysActive) {
 		// Only scan if system is active
+		// Scan time based on compiler constant (Set to 1 second)
 		if (millis() % SENSOR_SCAN_PERIOD == 0) {
-			// Scan every second
+			
+			// Determine if run-time cycle is complete 
 			if (sysState.cycleCount > sysState.cycleLimit) {
+				// Cycle time complete
+				// Disable all zones (fail safe for system)
 				disableAllZones();
+				// Determine if program is set
+				if (sysState.runProgram) {
+					// Program configured
+					// Determine if other zones are queued
+					if ( getNextZone() == false ) {
+						// Program complete
+						sysState.sysActive = false;	
+					}
+				} else {
+					// No program set
+					// Single run, set sysActive to false
+					sysState.sysActive = false;
+				}
 			} else {
+				// Cycle incomplete
 				// increment cycle counter
 				sysState.cycleCount ++;
 				// Add delay time delay to avoid counting all cycles
