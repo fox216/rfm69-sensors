@@ -31,7 +31,7 @@ void disableAllZones(){
   for (int x = 0; x < sizeof(zoneList); x++) {
     digitalWrite(zoneList[x], LOW);
   }
-  sysState.sysActive = false;
+  sysState.zoneActive = false;
 }
 
 void enableZone(byte Zone) {
@@ -42,7 +42,7 @@ void enableZone(byte Zone) {
 	// TODO Add switch to access only defined zones in ZoneIoMap
 	digitalWrite(Zone, HIGH);
 	// Enable cycle scanner
-	sysState.sysActive = true;
+	sysState.zoneActive = true;
 	// Reset Cycle Counter
 	sysState.cycleCount = 0;
 
@@ -196,6 +196,19 @@ void loop() {
 		}
 	}
 	//
+	// Send heartbeat message
+	// Keep alive message for gateway.
+	//
+	if (millis() % SENSOR_HEARTBEAT == 0) {
+		// Set payload
+		payload.MsgType = heartbeat;
+		o_heartbeat.mills = millis();
+		memcpy(payload.msg, &o_heartbeat, sizeof(o_heartbeat));
+		rxSize = PAYLOAD_HEADER_SIZE + sizeof(o_heartbeat);
+		radio.send(GATEWAY, (const void*)(&payload), rxSize);	
+		blink(LED, 150);
+	}
+	//
 	// RUNTIME Section -> Scan Cycle
 	//
 	if (sysState.sysActive) {
@@ -210,7 +223,6 @@ void loop() {
 				// Add delay time delay to avoid counting all cycles
 				delay(10);
 			}
-			
 			if (DEBUG_ENABLED == 1) {
 				//DEBUG
 				Serial.print("Count: ");
@@ -218,20 +230,6 @@ void loop() {
 				Serial.print(" Limit: ");
 				Serial.println(sysState.cycleLimit);
 			}
-			
 		}
-	}
-	//
-	// Send heartbeat message
-	// Keep alive message for gateway.
-	//
-	if (millis() % SENSOR_HEARTBEAT == 0) {
-		// Set payload
-		payload.MsgType = heartbeat;
-		o_heartbeat.mills = millis();
-		memcpy(payload.msg, &o_heartbeat, sizeof(o_heartbeat));
-		rxSize = PAYLOAD_HEADER_SIZE + sizeof(o_heartbeat);
-		radio.send(GATEWAY, (const void*)(&payload), rxSize);	
-		blink(LED, 150);
 	}
 }

@@ -45,23 +45,14 @@ $(ARDUINO)/WMath.cpp \
 $(ARDUINO)/Print.cpp \
 $(ARDUINO)/HardwareSerial.cpp \
 $(INSTALL_DIR)/libraries/EEPROM/EEPROM.cpp \
-$(INSTALL_DIR)/libraries/Ethernet/EthernetClient.cpp \
-$(INSTALL_DIR)/libraries/Ethernet/Ethernet.cpp \
-$(INSTALL_DIR)/libraries/Ethernet/EthernetServer.cpp \
 $(INSTALL_DIR)/libraries/Firmata/Firmata.cpp \
-$(INSTALL_DIR)/libraries/LiquidCrystal/LiquidCrystal.cpp \
-$(INSTALL_DIR)/libraries/Servo/Servo.cpp \
-$(INSTALL_DIR)/libraries/Stepper/Stepper.cpp \
 $(INSTALL_DIR)/libraries/Wire/Wire.cpp  \
 $(INSTALL_DIR)/libraries/SoftwareSerial/SoftwareSerial.cpp  \
-$(INSTALL_DIR)/libraries/IR/IRremote.cpp  \
-$(INSTALL_DIR)/libraries/RFM12B/RFM12B.cpp  \
 $(INSTALL_DIR)/libraries/SPIFlash/SPIFlash.cpp  \
 $(INSTALL_DIR)/libraries/SPI/SPI.cpp  \
 $(INSTALL_DIR)/libraries/RFM69/RFM69.cpp  \
 $(INSTALL_DIR)/libraries/LowPower/LowPower.cpp  \
-#$(INSTALL_DIR)/libraries/JeeLib/RF12.cpp  \
-#$(INSTALL_DIR)/libraries/JeeLib/Ports.cpp  \
+
 # end of CXX_MODULES
 
 CXX_APP = applet/$(TARGET).cpp
@@ -90,16 +81,10 @@ CXXDEFS = -DF_CPU=$(F_CPU)L -DARDUINO=$(VERSION)
 AVR_HEADERS = $(INSTALL_DIR)/hardware/arduino/variants/standard/
 ARDUINO_LIB_INCLUDES = \
 -I$(INSTALL_DIR)/libraries/EEPROM \
--I$(INSTALL_DIR)/libraries/Ethernet \
--I$(INSTALL_DIR)/libraries/Ethernet/utility \
 -I$(INSTALL_DIR)/libraries/Firmata \
--I$(INSTALL_DIR)/libraries/LiquidCrystal \
 -I$(INSTALL_DIR)/libraries/SPI \
--I$(INSTALL_DIR)/libraries/Servo \
 -I$(INSTALL_DIR)/libraries/SoftwareSerial \
 -I$(INSTALL_DIR)/libraries/Wire \
--I$(INSTALL_DIR)/libraries/IR \
--I$(INSTALL_DIR)/libraries/RFM12B \
 -I$(INSTALL_DIR)/libraries/RFM69 \
 -I$(INSTALL_DIR)/libraries/SPIFlash \
 -I$(INSTALL_DIR)/libraries/SPI \
