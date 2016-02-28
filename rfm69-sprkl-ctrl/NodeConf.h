@@ -14,7 +14,7 @@
 |	
 */
 
-#define NODEID      75
+#define NODEID      64
 #define GATEWAY     1
 #define NETWORKID   50
 #define FREQUENCY   RF69_915MHZ //Match this with the version of your Moteino! (others: RF69_433MHZ, RF69_868MHZ)
