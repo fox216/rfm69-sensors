@@ -100,7 +100,8 @@ typedef struct {
 	// P: [P]ause running program. (Note: Pause state will time out after 30 minutes. Updates to cancel -> idle)
 	// I: Used to report state [I]dle state indicates sprinklers are off, system ready... (NOT SETABLE [word?])
 	// C: [C]ancel running program, used to disable run. Note: Intermediate state used to reset system.
-	char 	state;				
+	char 	state;
+	byte	cycleSelect;		// length of time zone should run (Predefined times)				
 } _SysCtrl;
 _SysCtrl	i_SysCtrl;
 

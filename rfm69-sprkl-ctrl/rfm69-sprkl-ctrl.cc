@@ -164,6 +164,13 @@ void loop() {
 		// Extract Payload from Message
 		payload = *(Payload*)radio.DATA;
 		// Process message type (See Enum: MsgTypeIndex)
+
+		Serial.print("Size of Payload: ");
+		Serial.println(sizeof(payload.msg));
+
+		Serial.print("Message Type: ");
+		Serial.println(payload.MsgType);
+		
 		switch(payload.MsgType) {
 			// Process message type
 
@@ -211,11 +218,14 @@ void loop() {
 							Serial.print("Executing Program: ");
 							Serial.println(sysState.progName);
 						}
+						setCycle(i_zoneCtrl.cycleSelect);
+						sysState.sysActive = true;
 					break;
 					default:
 						if (DEBUG_ENABLED == 1) {
-							Serial.print("ERROR -> Invalid Program: ");
-							Serial.println(i_runProg.program);
+							Serial.print("ERROR -> Invalid Program [ ");
+							Serial.print(i_runProg.program);
+							Serial.println(" ] ");
 						}
 						// Set program name to reserved, invalid type.
 						// Used by processing logic to exclude program run.
@@ -305,7 +315,8 @@ void loop() {
 					// Determine if other zones are queued
 					if ( getNextZone() == false ) {
 						// Program complete
-						sysState.sysActive = false;	
+						sysState.sysActive = false;
+						sysState.runProgram = false;	
 					}
 				} else {
 					// No program set
