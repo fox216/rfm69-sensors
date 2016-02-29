@@ -48,6 +48,11 @@ typedef struct {
 } _SysState;
 _SysState sysState;
 
+typedef enum {
+	min2 = 2,		// 2  Minutes
+	min5 = 5,		// 5  Minutes
+	min10 = 10,		// 10 Minutes
+} enCycleSelect;
 
 // Sprinkler Zone IO Map
 // Abstraction for zone map

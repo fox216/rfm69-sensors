@@ -53,11 +53,7 @@ Payload payload;
 				Returns sysStatus message.
 
 */
-typedef enum {
-	min2 = 2,		// 2  Minutes
-	min5 = 5,		// 5  Minutes
-	min10 = 10,		// 10 Minutes
-} enCycleSelect;
+
 
 typedef struct {
 	// Name: zoneCtrl

@@ -166,11 +166,7 @@ void loop() {
 		// Process message type (See Enum: MsgTypeIndex)
 		switch(payload.MsgType) {
 			// Process message type
-			if (DEBUG_ENABLED == 1) {
-				// DEBUG
-				Serial.print("Executing Message Type: ");
-				Serial.println(payload.MsgType);
-			} 
+
 			//
 			// @@ ZoneControl - Activate Single Zone
 			case zoneCtrl:
@@ -189,7 +185,8 @@ void loop() {
 				// set cycle time for on-demand run	
 				setCycle(i_zoneCtrl.cycleSelect);
 				// set output HIGH, enabling system
-				enableZone(i_zoneCtrl.zone);
+				enableZone(zoneList[i_zoneCtrl.zone]);
+				sysState.sysActive = true;
 				break;
 			//
 			// @@ Run Program - Start predefined program 
@@ -298,7 +295,7 @@ void loop() {
 		if (millis() % SENSOR_SCAN_PERIOD == 0) {
 			
 			// Determine if run-time cycle is complete 
-			if (sysState.cycleCount > sysState.cycleLimit) {
+			if (sysState.cycleCount >= sysState.cycleLimit) {
 				// Cycle time complete
 				// Disable all zones (fail safe for system)
 				disableAllZones();
