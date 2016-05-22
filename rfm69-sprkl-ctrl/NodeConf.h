@@ -14,7 +14,7 @@
 |	
 */
 
-#define NODEID      64
+#define NODEID      50
 #define GATEWAY     1
 #define NETWORKID   50
 #define FREQUENCY   RF69_915MHZ //Match this with the version of your Moteino! (others: RF69_433MHZ, RF69_868MHZ)
@@ -24,7 +24,8 @@
 #define ACK_TIME    30  // # of ms to wait for an ack
 #define SPRKL_DWELL_TIME	200		// Set sprinkle dwell time
 #define GET_SPKL_STATUS 35000 
-#define SENSOR_HEARTBEAT 900250 	// Send sensor haertbeat message (15 Min & 250 ms)
+//#define SENSOR_HEARTBEAT 900250 	// Send sensor haertbeat message (15 Min & 250 ms)
+#define SENSOR_HEARTBEAT 1500 	// Send sensor haertbeat message (1.5 sec)
 //#define SENSOR_HEARTBEAT 3000 	// Send sensor haertbeat message (3 seconds for DEBUG)
 #define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
 #define DEBUG_ENABLED  1
@@ -56,6 +57,8 @@ typedef enum {
 
 // Sprinkler Zone IO Map
 // Abstraction for zone map
+
+/*
 typedef enum {
 	zone1 = 17, 	// Solid State Relay  1
 	zone2 = 4, 		// Solid State Relay  2
@@ -67,6 +70,22 @@ typedef enum {
 	zone8 = 15, 	// Solid State Relay  7
 	zone9 = 16, 	// Solid State Relay  9
 } ZoneIoMap;
+*/
+
+typedef enum {
+	zone1 = 8, 	// Solid State Relay  1
+	zone2 = 7, 		// Solid State Relay  2
+	zone3 = 6, 		// Solid State Relay  3
+	zone4 = 5, 		// Solid State Relay  4
+	zone5 = 15, 		// Solid State Relay  5
+	zone6 = 16, 		// Solid State Relay  6
+	zone7 = 17, 	// Solid State Relay  7
+	zone8 = 3, 	// Solid State Relay  7
+	zone9 = 4, 	// Solid State Relay  9
+	zone10 = 14, 	// Solid State Relay  9
+} ZoneIoMap;
+
+
 
 typedef enum {
 	z1 = 1,
@@ -77,7 +96,8 @@ typedef enum {
 	z6 = 6,
 	z7 = 7,
 	z8 = 8,
-	z9 = 9
+	z9 = 9,
+	z10 = 9,
 } ZoneReportMap;
 
 byte zoneReportList[] = {
@@ -89,7 +109,8 @@ byte zoneReportList[] = {
 	z6,
 	z7,
 	z8,
-	z9
+	z9,
+	z10,
 };
 
 // Enum Zone List
@@ -103,7 +124,8 @@ byte zoneList[] = {
 	zone6, 
 	zone7, 
 	zone8, 
-	zone9
+	zone9,
+	zone10,
 };
 
 // ----	Define programs	----

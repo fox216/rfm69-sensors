@@ -29,12 +29,25 @@ void blink(byte PIN, int DELAY_MS) {
 }
 
 
+
 void setup() {
 	// Setup Serial for Debug
 	if (DEBUG_ENABLED == 1){
 		Serial.begin(SERIAL_BAUD);
 		delay(10);
 	}
+	//Set Pins to output mode
+	pinMode(3, OUTPUT);
+	pinMode(4, OUTPUT);
+	pinMode(5, OUTPUT);
+	pinMode(6, OUTPUT);
+	pinMode(7, OUTPUT);
+	pinMode(8, OUTPUT);
+	pinMode(14, OUTPUT);
+	pinMode(15, OUTPUT);
+	pinMode(16, OUTPUT);
+	pinMode(17, OUTPUT);
+
 	// Setup Radio
 	radio.initialize(FREQUENCY,NODEID,NETWORKID);
 	radio.encrypt(KEY);
@@ -134,7 +147,7 @@ void setCycle(byte CycleSelect) {
 			break;
 		default:
 			// Set deafult value ot 10 seconds
-			sysState.cycleLimit = 10;	// Set to 10 seconds for testing............
+			sysState.cycleLimit = 15;	// Set to 10 seconds for testing............
 	}
 	/* DEBUG
 	Serial.print("Cycle Limit: ");
@@ -209,6 +222,7 @@ void loop() {
 					case 'A':
 					case 'F':
 					case 'B':
+						setCycle(i_zoneCtrl.cycleSelect);
 						sysState.progName = i_runProg.program; 
 						// Call Start Program 
 						sysState.zoneAcc = 0;
@@ -218,7 +232,7 @@ void loop() {
 							Serial.print("Executing Program: ");
 							Serial.println(sysState.progName);
 						}
-						setCycle(i_zoneCtrl.cycleSelect);
+						
 						sysState.sysActive = true;
 					break;
 					default:
