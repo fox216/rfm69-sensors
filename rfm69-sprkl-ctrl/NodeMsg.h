@@ -76,6 +76,7 @@ typedef struct {
 	// F: [F]ront zones in f_zones
 	// B: [B]ack zones in b_zones
 	char 	program;			// Predefined set of zones in sequence
+	byte	cycleSelect;
 } _runProg;
 _runProg	i_runProg;
 
@@ -117,6 +118,7 @@ typedef struct {
 	byte	percComplete;		// Percent complete (Range: 0 - 100) 
 } _SysStatus;
 _SysStatus	o_SysStatus;
+
 
 typedef struct {
 	unsigned long 	mills; 		// [4] long Heartbeat

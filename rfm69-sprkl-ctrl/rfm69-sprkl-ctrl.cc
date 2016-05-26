@@ -222,7 +222,7 @@ void loop() {
 					case 'A':
 					case 'F':
 					case 'B':
-						setCycle(i_zoneCtrl.cycleSelect);
+						setCycle(i_runProg.cycleSelect);
 						sysState.progName = i_runProg.program; 
 						// Call Start Program 
 						sysState.zoneAcc = 0;
