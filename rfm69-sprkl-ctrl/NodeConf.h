@@ -26,7 +26,6 @@
 #define GET_SPKL_STATUS 35000 
 #define SENSOR_HEARTBEAT 900250 	// Send sensor haertbeat message (15 Min & 250 ms)
 //#define SENSOR_HEARTBEAT 1500 	// Send sensor haertbeat message (1.5 sec)
-//#define SENSOR_HEARTBEAT 3000 	// Send sensor haertbeat message (3 seconds for DEBUG)
 #define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
 #define DEBUG_ENABLED  1
 
