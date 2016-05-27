@@ -138,10 +138,10 @@ byte f_zones[] = {
 // Back Zones
 byte b_zones[] = {
 	zone5, 
-	zone6, 
+	//zone6, 
 	zone7, 
 	zone8,
-	zone9 
+	//zone9 
 };
 
 
