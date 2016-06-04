@@ -130,6 +130,22 @@ bool getNextZone() {
 				return true;
 			}
 		break;
+		case 'C':
+			if (sysState.runProgram) {
+				// determine if next is longer than array 
+				sysState.zoneAcc ++;
+				if (sysState.zoneAcc >= sizeof(c_zones)) {
+					return false;
+				} else {
+					enableZone(c_zones[sysState.zoneAcc]);
+					return true;
+				}
+			} else {
+				sysState.runProgram = true;
+				enableZone(c_zones[sysState.zoneAcc]);
+				return true;
+			}
+		break;
 	} 
 
 }
@@ -145,6 +161,12 @@ void setCycle(byte CycleSelect) {
 		case min10:
 			sysState.cycleLimit = 600;
 			break;
+		case min15:
+			sysState.cycleLimit = 900;
+			break;
+		case min20:
+			sysState.cycleLimit = 1200;
+			break;	
 		default:
 			// Set deafult value ot 10 seconds
 			sysState.cycleLimit = 15;	// Set to 10 seconds for testing............
@@ -222,6 +244,7 @@ void loop() {
 					case 'A':
 					case 'F':
 					case 'B':
+					case 'C':
 						setCycle(i_runProg.cycleSelect);
 						sysState.progName = i_runProg.program; 
 						// Call Start Program 

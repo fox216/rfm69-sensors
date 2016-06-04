@@ -52,6 +52,8 @@ typedef enum {
 	min2 = 2,		// 2  Minutes
 	min5 = 5,		// 5  Minutes
 	min10 = 10,		// 10 Minutes
+	min15 = 15,		// 15 Minutes
+	min20 = 20,		// 20 Minutes
 } enCycleSelect;
 
 // Sprinkler Zone IO Map
@@ -135,6 +137,14 @@ byte f_zones[] = {
 	zone3, 
 	zone4, 
 };
+
+// Front Center Zones
+byte c_zones[] = {
+	//zone1, 
+	zone2, 
+	zone3, 
+	zone4, 
+};
 // Back Zones
 byte b_zones[] = {
 	zone5, 
@@ -143,8 +153,6 @@ byte b_zones[] = {
 	zone8,
 	//zone9 
 };
-
-
 
 
 
