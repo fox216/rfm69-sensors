@@ -10,6 +10,7 @@
 
 #define LED1 3
 #define LED2 16
+#define SENSOR_HEART_BEAT 5000 // 5 seconds
 
 typedef struct {
   byte			m1;
@@ -32,5 +33,13 @@ typedef struct {
   byte      led2;
 } _Sensor_t5;
 _Sensor_t5 Sensor_t5;
+
+typedef struct {
+  byte              m1;
+  unsigned long     runCount;
+  byte              m2;
+  unsigned long     MillSecs;
+} _Sensor_t100;
+_Sensor_t100 Sensor_t100;
 
 #endif
