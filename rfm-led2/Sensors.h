@@ -1,4 +1,7 @@
 // Sensor header file
+//
+// rfm-led2
+//
 #ifndef Sensors_h
 #define Sensors_h
 
@@ -8,10 +11,12 @@
 #include <Arduino.h>
 #endif
 
+
 #define LED1 3
 #define LED2 16
-#define SENSOR_HEART_BEAT 5000 // 5 seconds
-
+#define SENSOR_HEART_BEAT 5050 // 5 seconds
+#define HUMIDITY_SENSOR 3 // analog pin 3 A3
+#define HUMIDITY_READ_FREQ 10000 // 30 Seconds
 typedef struct {
   byte			m1;
   byte			b1;
@@ -41,5 +46,13 @@ typedef struct {
   unsigned long     MillSecs;
 } _Sensor_t100;
 _Sensor_t100 Sensor_t100;
+
+typedef struct {
+  byte      m1;
+  long      humdity;
+} _Sensor_101;
+_Sensor_101 Sensor_101;
+
+
 
 #endif
