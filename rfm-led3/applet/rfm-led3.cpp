@@ -1,3 +1,6 @@
+#include "Arduino.h"
+void setup();
+void loop();
 // rfm -led3.cc
 #include <RFM69.h>
 #include <SPI.h>
@@ -76,7 +79,6 @@ void loop() {
 	} else {
 		// post message to gateway (Heartbeat Example)
 		if (millis() % SENSOR_HEART_BEAT == 0) {
-
 			#ifdef DEBUG_SERIAL
 			Serial.println("Sending Heartbeat");
 			#endif
@@ -91,7 +93,6 @@ void loop() {
 
 	  		memcpy(nodeMsg.MsgPayload, &Sensor_100, sizeof(_Sensor_100));
 	  		msgSize = MSG_HEADER_SZ + sizeof(_Sensor_100);
-	  		
 	  		readyToXmit = true;
 		}
 		if (readyToXmit) {

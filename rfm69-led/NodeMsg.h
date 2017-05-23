@@ -90,7 +90,8 @@ typedef struct {
 	byte 			led = 0; 		// Pin number for the Led
 	byte			state;		// Value of the PIN. (Value written to address)
 } _LedMsg;
-_LedMsg i_LedMsg o_LedMsg;
+_LedMsg i_LedMsg;
+_LedMsg o_LedMsg;
 
 
 

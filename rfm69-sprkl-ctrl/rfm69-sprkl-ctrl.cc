@@ -1,6 +1,7 @@
 /*
 Sprinkler Sensor 
 Controls in-ground sprinkler system
+NOTE: This method retired, see new json format
 */
 #include <RFM69.h>
 #include <SPI.h>
