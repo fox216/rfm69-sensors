@@ -29,4 +29,13 @@
 // Heartbeat message frequency
 #define TRANSMITPERIOD 600000 // 10 min
 
+
+
+
+
+
+
+
+
+
 #endif

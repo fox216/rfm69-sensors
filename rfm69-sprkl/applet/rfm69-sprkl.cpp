@@ -1,3 +1,6 @@
+#include "Arduino.h"
+void setup();
+void loop();
 // rfm-json-sprkl
 #include <RFM69.h>
 #include <SPI.h>
