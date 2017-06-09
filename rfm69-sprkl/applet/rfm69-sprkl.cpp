@@ -97,6 +97,8 @@ void loop() {
 	if (sysState.sysActive) {
 		// Monitor system status
 		if (millis() % SENSOR_SCAN_PERIOD == 0 ) {
+			// Add scan delay (debounce) for timing issue
+			delay(50);
 			// Review status each interval
 			// Increment the cycle counter
 			sysState.cycleCount ++;

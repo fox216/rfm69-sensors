@@ -10,7 +10,7 @@
 
 #define SENSOR_HEART_BEAT 7500 // 5 seconds
 #define SENSOR_BYTES_FREQ 2000 // 2 seconds
-#define SPRKL_DWELL_TIME 15000 // Delay seconds between switching zones
+#define SPRKL_DWELL_TIME 5000 // Delay seconds between switching zones
 #define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
 
 typedef struct {
