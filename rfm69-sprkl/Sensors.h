@@ -12,6 +12,7 @@
 #define SENSOR_BYTES_FREQ 2000 // 2 seconds
 #define SPRKL_DWELL_TIME 5000 // Delay seconds between switching zones
 #define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
+#define SCAN_DEBOUNCE_TIME 50 // ammount of time to wait before next scan interval. Work around for scan calc.
 
 typedef struct {
   // Metadata (Byte: 10 )
@@ -23,9 +24,13 @@ typedef struct {
 } _Sensor_zoneCtrl;
 _Sensor_zoneCtrl Sensor_zoneCtrl;
 
-// typedef struct {
-// } _Sensor_runProg;
-// _Sensor_runProg Sensor_runProg;
+typedef struct {
+	byte 	m1; 				// metadata value 1 (byte 10)
+	byte  progNum; 		// program number, reference to zone list (byte 10)
+	byte 	m2; 				// metadata value 2 (byte 10)
+	int 	runSeconds;	// number of seconds to run each zone
+} _Sensor_progCtrl;
+_Sensor_progCtrl Sensor_progCtrl;
 
 
 typedef struct {
@@ -61,6 +66,32 @@ byte zoneList[] = {
 	zone10,
 };
 
+byte frontList[] = {
+	zone1,
+	zone2,
+	zone3,
+	zone4,
+	zone10,
+};
+
+byte backList[] = {
+	zone5,
+	zone6,
+	zone7,
+	zone8,
+};
+
+byte allList[] = {
+	zone1,
+	zone2,
+	zone3,
+	zone4,
+	zone5,
+	zone6,
+	zone7,
+	zone8,
+	zone10,
+};
 
 typedef enum {
 	// INDEX of system message types
@@ -68,7 +99,7 @@ typedef enum {
 	// See incoming message switch
 	heartbeat		= 10,
 	zoneCtrl 		= 20,    	// Control individual Zone
-	runProg 		= 30, 		// Control predefined groups of Zones
+	progCtrl 		= 30, 		// Control predefined groups of Zones
 	sysCtrl 		= 40,		// System contol message (Override functions)
 	sysStatus		= 50,		// System status callback
 } MsgTypeIndex; 
