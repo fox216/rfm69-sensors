@@ -111,10 +111,11 @@ typedef struct {
 	bool 	zoneActive;		// T/F zone status. Added for pause
 	bool 	runProgram;		// T/F set if program configured to run
 	byte  runMode;			// Equal to sensor type aka TypeID
+	byte  *progPtr;			// pointer to the program array 
 //	char 	sysCurState;	// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
 //	char 	progName;		// Store requested program
 //	byte 	currentZone;	// Current Zone Active
-//	byte 	zoneAcc;		// Zone accumulator (Index of zone set)
+	byte 	zoneAcc;		// Zone accumulator (Index of zone set)
 //	char 	systemState;	// Store system state
 	int		cycleCount;		// number of cycles run 
 	int		cycleLimit;		// max number of cycles to run

@@ -58,6 +58,16 @@ void enableZone(byte Zone) {
 
 }
 
+void enableProg() {
+	// run program
+	sysState.zoneAcc = sizeof(&sysState.progPtr);
+	for (byte thisZone = 0; thisZone >= sysState.zoneAcc; thisZone ++ ) {
+		// Enable zone in program
+		enableZone(thisZone);
+	}
+
+}
+
 // void zoneControl(_Sensor_zoneCtrl* zone) {
 // }
 
@@ -80,22 +90,36 @@ void loop() {
 				// Enable system
 				// envokes cycle checker
 				sysState.sysActive = true;
-
-
 				break;
-			/*
-			case runProg:
+			case progCtrl:
 				// Run a program
+				// set run mode
+				sysState.runMode = nodeMsg.TypeID;
+				sysState.cycleLimit = Sensor_progCtrl.runSeconds;
+				Sensor_progCtrl = *(_Sensor_progCtrl*)nodeMsg.MsgPayload;
+				switch (Sensor_progCtrl.progNum) {
+					// set program pointer
+					case 100:
+						sysState.progPtr = allList;
+					break;
+					case 101:
+						sysState.progPtr = frontList;
+					break;
+					case 102:
+						sysState.progPtr = backList;
+					break;
+				}
+
+
 
 				break;
-			*/
 		}
 	}
 	if (sysState.sysActive) {
 		// Monitor system status
 		if (millis() % SENSOR_SCAN_PERIOD == 0 ) {
 			// Add scan delay (debounce) for timing issue
-			delay(50);
+			delay(SCAN_DEBOUNCE_TIME);
 			// Review status each interval
 			// Increment the cycle counter
 			sysState.cycleCount ++;
