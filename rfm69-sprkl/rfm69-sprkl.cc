@@ -58,15 +58,6 @@ void enableZone(byte Zone) {
 
 }
 
-// void enableProg() {
-// 	// run program
-// 	sysState.zoneAcc = sizeof(&sysState.progPtr);
-// 	for (byte thisZone = 0; thisZone >= sysState.zoneAcc; thisZone ++ ) {
-// 		// Enable zone in program
-// 		enableZone(thisZone);
-// 	}
-
-// }
 
 // void zoneControl(_Sensor_zoneCtrl* zone) {
 // }
@@ -95,6 +86,7 @@ void loop() {
 				// Run a program
 				// set run mode
 				sysState.runMode = nodeMsg.TypeID;
+				// Duration to run each zone
 				sysState.cycleLimit = Sensor_progCtrl.runSeconds;
 				Sensor_progCtrl = *(_Sensor_progCtrl*)nodeMsg.MsgPayload;
 				switch (Sensor_progCtrl.progNum) {
@@ -151,6 +143,7 @@ void loop() {
 						if (sysState.zoneAcc >= sysState.progArrSize) {
 							// program complete
 							disableAllZones();
+							sysState.sysActive = false;
 							sysState.runProgram = false;
 						} else {
 							// enable next zone in program list
