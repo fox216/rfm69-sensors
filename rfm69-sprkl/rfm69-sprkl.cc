@@ -58,15 +58,15 @@ void enableZone(byte Zone) {
 
 }
 
-void enableProg() {
-	// run program
-	sysState.zoneAcc = sizeof(&sysState.progPtr);
-	for (byte thisZone = 0; thisZone >= sysState.zoneAcc; thisZone ++ ) {
-		// Enable zone in program
-		enableZone(thisZone);
-	}
+// void enableProg() {
+// 	// run program
+// 	sysState.zoneAcc = sizeof(&sysState.progPtr);
+// 	for (byte thisZone = 0; thisZone >= sysState.zoneAcc; thisZone ++ ) {
+// 		// Enable zone in program
+// 		enableZone(thisZone);
+// 	}
 
-}
+// }
 
 // void zoneControl(_Sensor_zoneCtrl* zone) {
 // }
@@ -100,19 +100,33 @@ void loop() {
 				switch (Sensor_progCtrl.progNum) {
 					// set program pointer
 					case 100:
+					  sysState.progArrSize = sizeof(allList);
 						sysState.progPtr = allList;
+						sysState.runProgram = true;
 					break;
 					case 101:
+					  sysState.progArrSize = sizeof(frontList);
 						sysState.progPtr = frontList;
+						sysState.runProgram = true;
+
 					break;
 					case 102:
+					  sysState.progArrSize = sizeof(backList);
 						sysState.progPtr = backList;
+						sysState.runProgram = true;
+					break;
+					default:
+						// unknown program
+						disableAllZones();
+						sysState.sysActive = false;
 					break;
 				}
-
-
-
-				break;
+				if (sysState.runProgram) {
+					// Start first item in list
+					sysState.zoneAcc = 0;
+					enableZone(*(sysState.progPtr + sysState.zoneAcc));
+				}
+				break; // End progCtrl Case
 		}
 	}
 	if (sysState.sysActive) {
@@ -130,11 +144,24 @@ void loop() {
 						disableAllZones();
 						sysState.sysActive = false;
 						break;
+					case progCtrl:
+						// Cycle through items in pointer array
+					  // Increment zone accumulator
+						sysState.zoneAcc++;
+						if (sysState.zoneAcc >= sysState.progArrSize) {
+							// program complete
+							disableAllZones();
+							sysState.runProgram = false;
+						} else {
+							// enable next zone in program list
+							enableZone(*(sysState.progPtr + sysState.zoneAcc));
+						}
+					break;
 				}
-
 			}
 		}
 	}
 
 
 } // End Loop
+

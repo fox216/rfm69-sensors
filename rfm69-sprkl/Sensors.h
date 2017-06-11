@@ -112,6 +112,7 @@ typedef struct {
 	bool 	runProgram;		// T/F set if program configured to run
 	byte  runMode;			// Equal to sensor type aka TypeID
 	byte  *progPtr;			// pointer to the program array 
+	byte 	progArrSize;	// size of the array the pointer is pointing 
 //	char 	sysCurState;	// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
 //	char 	progName;		// Store requested program
 //	byte 	currentZone;	// Current Zone Active
