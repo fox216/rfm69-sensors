@@ -116,6 +116,7 @@ void loop() {
 				if (sysState.runProgram) {
 					// Start first item in list
 					sysState.zoneAcc = 0;
+					sysState.sysActive = true;
 					enableZone(*(sysState.progPtr + sysState.zoneAcc));
 				}
 				break; // End progCtrl Case
