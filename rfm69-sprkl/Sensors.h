@@ -12,7 +12,7 @@
 #define SENSOR_BYTES_FREQ 2000 // 2 seconds
 #define SPRKL_DWELL_TIME 5000 // Delay seconds between switching zones
 #define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
-#define SCAN_DEBOUNCE_TIME 50 // ammount of time to wait before next scan interval. Work around for scan calc.
+#define SCAN_DEBOUNCE_TIME 125 // ammount of time to wait before next scan interval. Work around for scan calc.
 
 typedef struct {
   // Metadata (Byte: 10 )

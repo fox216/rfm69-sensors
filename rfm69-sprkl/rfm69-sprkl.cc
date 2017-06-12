@@ -9,7 +9,6 @@
 RFM69 radio;
 bool 	readyToXmit = false;
 int 	msgSize = 0;
-bool 	enableScan = true;
 
 void disableAllZones(){
   // Turn all zones off
@@ -56,7 +55,6 @@ void enableZone(byte Zone) {
 	sysState.zoneActive = true;
 	// Reset Cycle Counter
 	sysState.cycleCount = 0;
-	enableScan = true;
 
 }
 
@@ -123,10 +121,9 @@ void loop() {
 	}
 	if (sysState.sysActive) {
 		// Monitor system status
-		if (millis() % SENSOR_SCAN_PERIOD == 0 && enableScan) {
+		if (millis() % SENSOR_SCAN_PERIOD == 0) {
 			// Add scan delay (debounce) for timing issue
-			enableScan = false;
-			//delay(SCAN_DEBOUNCE_TIME);
+			delay(SCAN_DEBOUNCE_TIME);
 			// Review status each interval
 			// Increment the cycle counter
 			sysState.cycleCount ++;
@@ -153,9 +150,7 @@ void loop() {
 					break;
 				}
 			}
-		} else {
-			enableScan = true;
-		}
+		} 
 	}
 } // End Loop
 
