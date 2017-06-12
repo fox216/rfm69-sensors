@@ -7,8 +7,9 @@
 #include <Sensors.h>
 
 RFM69 radio;
-bool readyToXmit = false;
-int msgSize = 0;
+bool 	readyToXmit = false;
+int 	msgSize = 0;
+bool 	scanToggle = false
 
 void disableAllZones(){
   // Turn all zones off
@@ -55,12 +56,10 @@ void enableZone(byte Zone) {
 	sysState.zoneActive = true;
 	// Reset Cycle Counter
 	sysState.cycleCount = 0;
+	scanToggle = false;
 
 }
 
-
-// void zoneControl(_Sensor_zoneCtrl* zone) {
-// }
 
 void loop() {
 	// Process incoming message / action
@@ -124,9 +123,10 @@ void loop() {
 	}
 	if (sysState.sysActive) {
 		// Monitor system status
-		if (millis() % SENSOR_SCAN_PERIOD == 0 ) {
+		if (millis() % SENSOR_SCAN_PERIOD == 0 && !scanToggle) {
 			// Add scan delay (debounce) for timing issue
-			delay(SCAN_DEBOUNCE_TIME);
+			scanToggle = true;
+			//delay(SCAN_DEBOUNCE_TIME);
 			// Review status each interval
 			// Increment the cycle counter
 			sysState.cycleCount ++;
@@ -153,6 +153,8 @@ void loop() {
 					break;
 				}
 			}
+		} else {
+			scanToggle = false;
 		}
 	}
 
