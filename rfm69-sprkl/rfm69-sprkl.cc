@@ -122,11 +122,8 @@ void loop() {
 	if (sysState.sysActive) {
 		// Monitor system status
 		if (millis() % SENSOR_SCAN_PERIOD == 0) {
-			// Add scan delay (debounce) for timing issue
-			delay(SCAN_DEBOUNCE_TIME);
 			// Review status each interval
 			// Increment the cycle counter
-			sysState.cycleCount ++;
 			if (sysState.cycleCount >= sysState.cycleLimit) {
 				// Disable system when count limit is reached
 				switch(sysState.runMode) {
@@ -149,6 +146,12 @@ void loop() {
 						}
 					break;
 				}
+			} else {
+				// Increase cycle count
+				sysState.cycleCount ++;
+				// Add scan delay (debounce) for timing issue
+				delay(SCAN_DEBOUNCE_TIME);
+
 			}
 		} 
 	}
