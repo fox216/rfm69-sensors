@@ -90,7 +90,7 @@ byte allList[] = {
 	zone6,
 	zone7,
 	zone8,
-	zone10,
+	//zone10,
 };
 
 typedef enum {
