@@ -71,7 +71,7 @@ byte frontList[] = {
 	zone2,
 	zone3,
 	zone4,
-	zone10,
+//	zone10,
 };
 
 byte backList[] = {
