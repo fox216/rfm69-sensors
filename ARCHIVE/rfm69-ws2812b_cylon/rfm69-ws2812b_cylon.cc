@@ -13,8 +13,8 @@
 CRGB leds[NUM_LEDS];
 
 void setup() { 
-    Serial.begin(57600);
-    Serial.println("resetting");
+    //Serial.begin(57600);
+    //Serial.println("resetting");
     LEDS.addLeds<WS2812,DATA_PIN,RGB>(leds,NUM_LEDS);
     LEDS.setBrightness(84);
 }
@@ -23,7 +23,7 @@ void fadeall() { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(250); } }
 
 void loop() { 
     static uint8_t hue = 0;
-    Serial.print("x");
+    //Serial.print("x");
     // First slide the led in one direction
     for(int i = 0; i < NUM_LEDS; i++) {
         // Set the i'th led to red 
@@ -48,6 +48,6 @@ void loop() {
         // leds[i] = CRGB::Black;
         fadeall();
         // Wait a little bit before we loop around and do it again
-        delay(10);
+        delay(500);
     }
 }
