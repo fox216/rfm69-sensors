@@ -26,8 +26,15 @@ typedef struct {
   // Metadata (Byte: 10 )
   byte			m1;
   byte			brightnessNum;
-} _Sensor_patternCtrl;
+} _Sensor_brightnessCtrl;
 _Sensor_brightnessCtrl Sensor_brightnessCtrl;
+
+typedef struct {
+  // Metadata (Byte: 10 )
+  byte			m1;
+  byte			speedNum;
+} _Sensor_speedCtrl;
+_Sensor_speedCtrl Sensor_speedCtrl;
 
 
 typedef enum {
@@ -37,7 +44,7 @@ typedef enum {
 	heartbeat					= 10,
 	patternCtrl 			= 20,    	// Control pattern
 	brightnessCtrl 		= 30, 		// Control predefined groups of Zones
-	sysCtrl 					= 40,		// System contol message (Override functions)
+	speedCtrl 				= 40,		// System contol message (Override functions)
 	sysStatus					= 50,		// System status callback
 } MsgTypeIndex; 
 

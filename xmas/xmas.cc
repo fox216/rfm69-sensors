@@ -1,4 +1,4 @@
-// rfm69-garland
+// xmas tree LED lights
 #include <RFM69.h>
 #include <SPI.h>
 // #include <GatewayMsg.h> // Load Gateway Message structure:Task
@@ -20,6 +20,11 @@ CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
 bool glitter_state = false;
 bool garland_on_off = true;
+uint8_t brightness = 255;
+uint8_t speed = 255;
+
+
+
 
 extern CRGBPalette16 myRedWhiteBluePalette;
 extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
@@ -96,8 +101,7 @@ void addGlitter( fract8 chanceOfGlitter) {
 // }
 void FillLEDsFromPaletteColors( uint8_t colorIndex)
 {
-    uint8_t brightness = 255;
-    
+        
     for( int i = 0; i < NUM_LEDS; i++) {
         leds[i] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
         colorIndex += 3;
@@ -199,7 +203,17 @@ void loop() {
             garland_on_off = false;
           break;
         }
-        
+      break;
+      case brightnessCtrl:
+      // Change the brightnes of the LEDS
+      Sensor_brightnessCtrl = *(_Sensor_brightnessCtrl*)nodeMsg.MsgPayload;
+      brightnes = 255*(Sensor_brightnessCtrl.brightnessNum/100);
+      break;
+      case speedCtrl:
+      // Change the speed of the LEDS
+      Sensor_speedCtrl = *(_Sensor_speedCtrl*)nodeMsg.MsgPayload;
+      speed = 255*(Sensor_speedCtrl.speedNum/100);
+
       break;
 
     }
