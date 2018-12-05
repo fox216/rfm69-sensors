@@ -25,16 +25,24 @@ _Sensor_patternCtrl Sensor_patternCtrl;
 typedef struct {
   // Metadata (Byte: 10 )
   byte			m1;
-  byte			brightnessNum;
+  float			brightnessNum;
 } _Sensor_brightnessCtrl;
 _Sensor_brightnessCtrl Sensor_brightnessCtrl;
 
 typedef struct {
   // Metadata (Byte: 10 )
   byte			m1;
-  byte			speedNum;
+  float			speedNum;
 } _Sensor_speedCtrl;
 _Sensor_speedCtrl Sensor_speedCtrl;
+
+typedef struct {
+  // Metadata (Byte: 10 )
+  byte			m1;
+  byte			chanceOfGlitter;
+} _Sensor_glitterCtrl;
+_Sensor_glitterCtrl Sensor_glitterCtrl;
+
 
 
 typedef enum {
@@ -45,7 +53,9 @@ typedef enum {
 	patternCtrl 			= 20,    	// Control pattern
 	brightnessCtrl 		= 30, 		// Control predefined groups of Zones
 	speedCtrl 				= 40,		// System contol message (Override functions)
-	sysStatus					= 50,		// System status callback
+	glitterCtrl 			= 42,		// System contol message (Override functions)
+	sysStatus					= 250,		// System status callback
+	resetDefaults			= 251,
 } MsgTypeIndex; 
 
 
@@ -57,10 +67,10 @@ typedef enum {
 	rainbows					= 14,		// rainbow pattern
 	fireBurst					= 15, 	// Fire burst pattern
 	Xmas							= 16,
+	Merica						= 17,
 	glitter_on				= 200,	// add glitter to pattern
 	glitter_off				= 201,	// add glitter to pattern
 	garlandOff				= 250,	// Turn off Garland
-
 
 } PatternIndex;
 
@@ -96,19 +106,11 @@ typedef enum {
 
 // Internal structure to record system state
 typedef struct {
-	bool	sysActive;		// T/F system active
-	bool 	patternActive;		// T/F pattern status. Added for pause
-	bool 	runProgram;		// T/F set if program configured to run
-	byte  runMode;			// Equal to sensor type aka TypeID
-	byte  *progPtr;			// pointer to the program array 
-	byte 	progArrSize;	// size of the array the pointer is pointing 
-//	char 	sysCurState;	// System State: (R: Run, P: Paused, I: Idle, C: Cancel) 
-//	char 	progName;		// Store requested program
-//	byte 	currentpattern;	// Current pattern Active
-	byte 	patternAcc;		// pattern accumulator (Index of pattern set)
-//	char 	systemState;	// Store system state
-	int		cycleCount;		// number of cycles run 
-	int		cycleLimit;		// max number of cycles to run
+	bool	ledsOn;
+	bool	glitter;
+	byte 	chanceOfGlitter;
+	byte  updatesPerSecond;
+	byte 	ledsBrightness;
 } _SysState;
 _SysState sysState;
 
