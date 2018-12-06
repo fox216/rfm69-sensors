@@ -241,7 +241,7 @@ void loop() {
 
   // ChangePalettePeriodically();
   
-  if (sysState.ledsBrightness != 0) {
+  // if (sysState.ledsBrightness != 0) {
 
     static uint8_t startIndex = 0;
     startIndex = startIndex + sysState.updatesPerSecond; /* motion speed */
@@ -251,8 +251,8 @@ void loop() {
     
 
     FastLED.show();
-    // FastLED.delay(1000/60);
-  }
+    FastLED.delay(1000/60);
+  // }
 } // END LOOP
 
 
