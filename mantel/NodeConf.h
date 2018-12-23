@@ -16,7 +16,7 @@
 */
 
 // Configuration for RFM69 Radio
-#define NODEID      45
+#define NODEID      31
 #define NETWORKID   60 // 50 for testing... change to production (100)
 #define FREQUENCY   RF69_915MHZ //Match this with the version of your Moteino! (others: RF69_433MHZ, RF69_868MHZ)
 #define KEY         "thisIsEncryptKey" //has to be same 16 characters/bytes on all nodes, not more not less!
