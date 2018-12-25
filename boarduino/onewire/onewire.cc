@@ -21,98 +21,56 @@
  */
 
 // // #include <Arduino.h>
-// #include <OneWire.h>
-// #include <DS2438.h>
+#include <OneWire.h>
+#include <DS2438.h>
 
-// // define the Arduino digital I/O pin to be used for the 1-Wire network here
-// const uint8_t ONE_WIRE_PIN = 2;
+// define the Arduino digital I/O pin to be used for the 1-Wire network here
+const uint8_t ONE_WIRE_PIN = 2;
 
                                                                                                          
 
 
-// // define the 1-Wire address of the DS2438 battery monitor here (lsb first)
-// uint8_t DS2438_address[] = { 0x14, 0x0D, 0xD4, 0x69, 0x02, 0x00, 0x00, 0x48 };
+// define the 1-Wire address of the DS2438 battery monitor here (lsb first)
+uint8_t DS2438_address[] = { 0x26, 0x33, 0xB2, 0x6B, 0x00, 0x00, 0x00, 0x1D };
 
-// OneWire ow(ONE_WIRE_PIN);
-// DS2438 ds2438(&ow, DS2438_address);
-
-// void setup() {
-//     Serial.begin(115200);
-//     ds2438.begin();
-// }
-
-// void loop() {
-//     ds2438.update();
-//     if (ds2438.isError()) {
-//         Serial.println("Error reading from DS2438 device");
-//     } else {
-//         Serial.print("Temperature = ");
-//         Serial.print(ds2438.getTemperature(), 1);
-//         Serial.print("C, Channel A = ");
-//         Serial.print(ds2438.getVoltage(DS2438_CHA), 1);
-//         Serial.print("v, Channel B = ");
-//         Serial.print(ds2438.getVoltage(DS2438_CHB), 1);
-//         Serial.println("v.");
-//     }
-//     delay(500);
-// }
-
-
-// Address=14 D D4 69 2 0 0 48                                                                                                       
-// Address CRC is correct.  
-
-#include <OneWire.h>
-#include <DallasEPROM.h>
-
-OneWire onew(2);  // on pin 4
-DallasEPROM de(&onew);
+OneWire ow(ONE_WIRE_PIN);
+DS2438 ds2438(&ow, DS2438_address);
 
 void setup() {
-  Serial.begin(115200);
+    Serial.begin(115200);
+    ds2438.begin();
 }
 
 void loop() {
-  byte buffer[32];  // Holds one page of data
-  int status;
-
-  // Search for the first compatible EPROM/EEPROM on the bus.
-  // If you have multiple devices you can use de.setAddress()
-  de.search();
-
-  // Print out the 1-wire device's 64-bit address
-  Serial.print("Address=");
-  for(int i = 0; i < 8; i++) {
-    Serial.print(de.getAddress()[i], HEX);
-    Serial.print(" ");
-  }
-  Serial.println("");
-
-  if (de.getAddress()[0] == 0x00) {
-    Serial.println("No device was found!");
-  } else {
-    if (de.validAddress(de.getAddress())) {
-      Serial.println("Address CRC is correct.");
-
-      // Uncomment to write to the first page of memory
-      //strcpy((char*)buffer, "allthingsgeek.com");
-      //if ((status = de.writePage(buffer, 0)) != 0) {
-        //sprintf((char*)buffer, "Error writing page! Code: %d", status);
-        //Serial.println((char*)buffer);
-      //}
-
-      // Read the first page of memory into buffer
-      if ((status = de.readPage(buffer, 0)) == 0) {
-        Serial.println((char*)buffer);
-      } else {
-        sprintf((char*)buffer, "Error reading page! Code: %d", status);
-        Serial.println((char*)buffer);
-      }
+    ds2438.update();
+    if (ds2438.isError()) {
+        Serial.println("Error reading from DS2438 device");
     } else {
-      Serial.println("Address CRC is wrong.");
+        Serial.print("Temperature = ");
+        Serial.print(ds2438.getTemperature(), 1);
+        Serial.print("C, Channel A = ");
+        Serial.print(ds2438.getVoltage(DS2438_CHA), 1);
+        Serial.print("v, Channel B = ");
+        Serial.print(ds2438.getVoltage(DS2438_CHB), 1);
+        Serial.println("v.");
     }
-  }
-  Serial.println("");
-
-  delay(3000);
+    delay(5000);
 }
 
+
+/*
+
+Temperature = 18.6C, Channel A = 0.7v, Channel B = 2.8v.                                                                                  
+Temperature = 18.5C, Channel A = 0.7v, Channel B = 2.8v.                                                                                  
+Temperature = 18.6C, Channel A = 1.2v, Channel B = 2.8v.                                                                                  
+Temperature = 18.7C, Channel A = 1.3v, Channel B = 2.8v.                                                                                  
+Temperature = 22.4C, Channel A = 1.9v, Channel B = 2.8v.                                                                                  
+Temperature = 20.4C, Channel A = 2.1v, Channel B = 2.8v.                                                                                  
+Temperature = 19.0C, Channel A = 1.9v, Channel B = 2.8v.                                                                                  
+Temperature = 18.8C, Channel A = 1.6v, Channel B = 2.8v.                                                                                  
+Temperature = 18.8C, Channel A = 1.5v, Channel B = 2.8v.                                                                                  
+Temperature = 18.8C, Channel A = 1.4v, Channel B = 2.8v.                                                                                  
+Temperature = 18.8C, Channel A = 0.7v, Channel B = 2.7v. 
+
+// Channel A = Humidity
+*/
