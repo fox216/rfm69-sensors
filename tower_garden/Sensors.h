@@ -51,19 +51,14 @@ typedef enum {
 
 
 typedef enum {
-	defaultPattern		= 10, 	// default LED pattern
-	candyCane					= 11,		// candy cane pattern
-	fire							= 12,		// fire pattern
-	midnightBlue			= 13,		// Midnight blue pattern
-	rainbows					= 14,		// rainbow pattern
-	fireBurst					= 15, 	// Fire burst pattern
-	Xmas							= 16,
-	Merica						= 17,
-	glitter_on				= 200,	// add glitter to pattern
-	glitter_off				= 201,	// add glitter to pattern
-	garlandOff				= 250,	// Turn off Garland
+// Listing of EEProm memory offset locations
 
-} PatternIndex;
+} EEPROM_Address_Offset;
+
+typedef enum {
+// Listing of sensor commands
+
+} CommandIndex;
 
 
 typedef struct {
@@ -81,13 +76,10 @@ typedef struct {
 } _Sensor_sysCtrl;
 _Sensor_sysCtrl Sensor_sysCtrl;
 
-// map of patterns to IO ports
-typedef enum {
-
-} patternIoMap;
 
 // Internal structure to record system state
 typedef struct {
+
 } _SysState;
 _SysState sysState;
 
