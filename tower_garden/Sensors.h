@@ -16,30 +16,6 @@
 #define WATER_PUMP_INTERVAL 900 // 15 minutes in seconds
 #define LIGHT_TOWER_DURATION 43200 // 12 hours in seconds
 
-// EEPROM BYTES 1024
-
-
-
-// Structure to set the brightness (intensity of the LEDs)
-typedef struct {
-  // Metadata (Byte: 10 )
-  byte			m1;
-  float			brightnessNum;
-} _Sensor_brightnessCtrl;
-_Sensor_brightnessCtrl Sensor_brightnessCtrl;
-
-typedef struct {
-  // Metadata (Byte: 10 )
-  byte			m1;
-  float			speedNum;
-} _Sensor_speedCtrl;
-_Sensor_speedCtrl Sensor_speedCtrl;
-
-typedef struct {
-  // Metadata (Byte: 10 )
-} _Sensor_glitterCtrl;
-_Sensor_glitterCtrl Sensor_glitterCtrl;
-
 
 
 typedef enum {
@@ -50,16 +26,16 @@ typedef enum {
 } MsgTypeIndex; 
 
 
-typedef enum {
-// Listing of EEProm memory offset locations
-
-} EEPROM_Address_Offset;
 
 typedef enum {
 // Listing of sensor commands
 
 } CommandIndex;
 
+typedef struct {
+	unsigned int startup_count;
+} _startup_counter;
+_startup_counter startup_counter;
 
 typedef struct {
 	byte 	m1; 				// metadata value 1 (byte 10)
@@ -79,7 +55,8 @@ _Sensor_sysCtrl Sensor_sysCtrl;
 
 // Internal structure to record system state
 typedef struct {
-
+	bool lightTower_State = true;
+	bool waterPump_state = true;
 } _SysState;
 _SysState sysState;
 

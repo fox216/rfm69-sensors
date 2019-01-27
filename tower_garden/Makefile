@@ -50,6 +50,8 @@ $(AVR_LIB_ADDON)/FastLED/colorpalettes.cpp \
 $(AVR_LIB_ADDON)/FastLED/hsv2rgb.cpp \
 $(AVR_LIB_ADDON)/FastLED/colorutils.cpp \
 $(AVR_LIB_ADDON)/FastLED/lib8tion.cpp \
+$(AVR_LIB_ADDON)/OneWire/OneWire.cpp \
+
 
 
 # Header file includes
@@ -60,6 +62,8 @@ ARDUINO_LIB_INCLUDES = \
 -I$(AVR_LIB_ADDON)/ArduinoJson \
 -I$(AVR_LIB_ADDON)/ArduinoCap \
 -I$(AVR_LIB_ADDON)/FastLED \
+-I$(AVR_LIB_ADDON)/OneWire \
+
 
 # -I$(AVR_LIB_ADDON)/FastLED/platforms/avr \
 # -I$(AVR_LIB_ADDON)/FastLED/lib8tion \
