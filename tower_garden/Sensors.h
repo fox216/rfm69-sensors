@@ -16,9 +16,10 @@
 #define WATER_PUMP_INTERVAL 900 // 15 minutes in seconds
 #define LIGHT_TOWER_INTERVAL 43200 // 12 hours in seconds
 // IO MAPPING
-#define LIGHT_TOWER_PIN 10 // Digital IO for Light tower
-#define WATER_PUMP_PIN 11 // Digital IO for Water Pump
-
+#define LIGHT_TOWER_PIN 4 // Digital IO for Light tower
+#define WATER_PUMP_PIN 5 // Digital IO for Water Pump
+#define DOW_1_PIN 6 // Dallas 1 wire sensor 1
+#define DOW_2_PIN 7 // Dallas 1 wire sensor 1
 
 typedef enum {
 	// INDEX of system message types
@@ -61,13 +62,26 @@ typedef struct {
 _Sensor_sysCtrl Sensor_sysCtrl;
 
 
+
+
 // Internal structure to record system state
 typedef struct {
-	bool lightTower_state = true;
-	bool waterPump_state = true;
+	byte m1 = 10;
+	byte lightTower_state = 1;
+	byte m2 = 10;
+	byte waterPump_state = 1;
+	byte m3 = 42;
+	float temp_sensor_1;
+	byte m4 = 42;
+	float humidity_sensor_1;
+	byte m5 = 42;
+	float temp_sensor_2;
+	byte m6 = 42;
+	float humidity_sensor_2;
 
-} _SysState;
-_SysState sysState;
+
+} _sysState;
+_sysState sysState;
 
 
 
