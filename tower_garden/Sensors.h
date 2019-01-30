@@ -8,18 +8,26 @@
 #include <Arduino.h>
 #endif
 
+#define DEBUG 1
 
 // Sensor heartbeat = Interval for sensor reporting status
 #define SENSOR_HEART_BEAT 12000 // 20 minutes in seconds
 #define	SENSOR_SCAN_PERIOD 1000		// scan frequency for sensor control.
 #define SCAN_DEBOUNCE_TIME 20 // ammount of time to wait before next scan interval. Work around for scan calc.
+#ifdef DEBUG
+// DEBUG Test Values
+#define WATER_PUMP_INTERVAL 5 // 30 seconds
+#define LIGHT_TOWER_INTERVAL 10 // 120 seconds 
+#else
 #define WATER_PUMP_INTERVAL 900 // 15 minutes in seconds
 #define LIGHT_TOWER_INTERVAL 43200 // 12 hours in seconds
+#endif
+
 // IO MAPPING
-#define LIGHT_TOWER_PIN 4 // Digital IO for Light tower
-#define WATER_PUMP_PIN 5 // Digital IO for Water Pump
-#define DOW_1_PIN 6 // Dallas 1 wire sensor 1
-#define DOW_2_PIN 7 // Dallas 1 wire sensor 1
+#define LIGHT_TOWER_PIN 3 // Digital IO for Light tower
+#define WATER_PUMP_PIN 4 // Digital IO for Water Pump
+#define DOW_1_PIN 5 // Dallas 1 wire sensor 1
+#define DOW_2_PIN 6 // Dallas 1 wire sensor 1
 
 typedef enum {
 	// INDEX of system message types
@@ -66,20 +74,18 @@ _Sensor_sysCtrl Sensor_sysCtrl;
 
 // Internal structure to record system state
 typedef struct {
-	byte m1 = 10;
-	byte lightTower_state = 1;
-	byte m2 = 10;
-	byte waterPump_state = 1;
-	byte m3 = 42;
+	byte m1 = _byte_;
+	byte lightTower_state = 0;
+	byte m2 = _byte_;
+	byte waterPump_state = 0;
+	byte m3 = _float_;
 	float temp_sensor_1;
-	byte m4 = 42;
+	byte m4 = _float_;
 	float humidity_sensor_1;
-	byte m5 = 42;
+	byte m5 = _float_;
 	float temp_sensor_2;
-	byte m6 = 42;
+	byte m6 = _float_;
 	float humidity_sensor_2;
-
-
 } _sysState;
 _sysState sysState;
 

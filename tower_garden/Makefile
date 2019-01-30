@@ -7,7 +7,7 @@
 
 TARGET = $(notdir $(CURDIR))
 INSTALL_DIR = /swpkg/avr/arduino
-AVR_PORT ?= ttyFOX
+AVR_PORT ?= ttyLPL
 PORT = /dev/$(AVR_PORT)
 AVRDUDE_PROGRAMMER = arduino
 MCU = atmega328p
