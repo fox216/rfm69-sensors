@@ -9,8 +9,6 @@
 #include <OneWire.h>
 #include <DS2438.h>
 
-byte wcount = 0;
-
 RFM69 radio;
 bool 	readyToXmit = false;
 int 	msgSize = 0;
@@ -24,43 +22,6 @@ DS2438 ds2438_1(&ows1, DS2438_1_addr);
 OneWire ows2(DOW_2_PIN);
 DS2438 ds2438_2(&ows2, DS2438_1_addr);
 
-void light_ctrl() {
-	// toggle light tower state
-	sysState.lightTower_state = ! sysState.lightTower_state;
-	if (sysState.lightTower_state == 1) {
-		// Turn on light tower
-		digitalWrite(LIGHT_TOWER_PIN, HIGH);
-	} else {
-		// Turn off light tower
-		digitalWrite(LIGHT_TOWER_PIN, LOW);
-	}
-}
-
-void water_ctrl() {
-	// toggle water pump state
-	sysState.waterPump_state = ! sysState.waterPump_state;
-	if (sysState.waterPump_state == 1) {
-		// Turn on water pump
-		digitalWrite(WATER_PUMP_PIN, HIGH);
-	} else {
-		// Turn off water pump
-		digitalWrite(WATER_PUMP_PIN, LOW);
-	}
-}
-
-void setup()  {
-  delay( 10000 ); // power-up safety delay
-  Serial.begin(115200);
-  pinMode(LIGHT_TOWER_PIN, OUTPUT);
-	pinMode(WATER_PUMP_PIN, OUTPUT);
-
-  // Initialize Radio 
-  radio.initialize(FREQUENCY, NODEID, NETWORKID);
-  radio.encrypt(KEY);
-
-
-}// END SETUP
-
 void collect_dow_data() {
 	sysState.temp_sensor_1 = ds2438_1.getTemperature();
 	sysState.humidity_sensor_1 = ds2438_1.getVoltage(DS2438_CHA);
@@ -68,6 +29,11 @@ void collect_dow_data() {
 	sysState.humidity_sensor_2 = ds2438_2.getVoltage(DS2438_CHA);
 }
 
+void Blink() {
+  digitalWrite(PIN,HIGH);
+  delay(PIN_DELAY);
+  digitalWrite(PIN,LOW);
+}
 
 void send_sysState() {
 	//** collect current state from sensors
@@ -81,10 +47,62 @@ void send_sysState() {
 	memcpy(nodeMsg.MsgPayload, &sysState, sizeof(_sysState));
 	msgSize = MSG_HEADER_SZ + sizeof(_sysState);
 	radio.send(nodeMsg.NodeID, (const void*)(&nodeMsg), msgSize);
-
+	/*
+	{"node":64,"meth":4,"type":10,"rssi":-65,"datasz":32,"data":[41,0,0,10]}
+	*/
+	Blink();
 }
 
+void light_ctrl() {
+	// toggle light tower state
+	if (sysState.lightTower_state == ON) {
+		sysState.lightTower_state = OFF;
+	} else {
+		sysState.lightTower_state = ON;
+	}
+	// sysState.lightTower_state = ! sysState.lightTower_state;
+	if (sysState.lightTower_state == ON) {
+		// Turn on light tower
+		digitalWrite(LIGHT_TOWER_PIN, HIGH);
+	} else {
+		// Turn off light tower
+		digitalWrite(LIGHT_TOWER_PIN, LOW);
+	}
+	send_sysState();
+}
 
+void water_ctrl() {
+	// toggle water pump state
+	if (sysState.waterPump_state == ON) {
+		sysState.waterPump_state = OFF;
+	} else {
+		sysState.waterPump_state = ON;
+	}
+	// sysState.waterPump_state = ! sysState.waterPump_state;
+	if (sysState.waterPump_state == ON) {
+		// Turn on water pump
+		digitalWrite(WATER_PUMP_PIN, HIGH);
+	} else {
+		// Turn off water pump
+		digitalWrite(WATER_PUMP_PIN, LOW);
+	}
+	send_sysState();
+}
+
+void setup()  {
+  delay( 10000 ); // power-up safety delay
+  Serial.begin(115200);
+  pinMode(LIGHT_TOWER_PIN, OUTPUT);
+	pinMode(WATER_PUMP_PIN, OUTPUT);
+	pinMode(PIN, OUTPUT);
+
+  // Initialize Radio 
+  radio.initialize(FREQUENCY, NODEID, NETWORKID);
+  radio.encrypt(KEY);
+  // enable system
+  water_ctrl();
+  light_ctrl();
+}// END SETUP
 
 void loop() {
   // Process incoming message / action
@@ -105,11 +123,11 @@ void loop() {
   } // END MSG Processing
   // raw counter
   if (millis() % SENSOR_SCAN_PERIOD == 0) {
-  	wcount += 1;
-	  if (wcount % WATER_PUMP_INTERVAL == 0) {
+  	sysState.run_count += 1;
+	  if (sysState.run_count % WATER_PUMP_INTERVAL == 0) {
 	  	water_ctrl();
 	  }
-	  if (wcount % LIGHT_TOWER_INTERVAL == 0 ) {
+	  if (sysState.run_count % LIGHT_TOWER_INTERVAL == 0 ) {
 	  	light_ctrl();
 	  }
 	  delay(20);

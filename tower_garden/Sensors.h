@@ -28,6 +28,10 @@
 #define WATER_PUMP_PIN 4 // Digital IO for Water Pump
 #define DOW_1_PIN 5 // Dallas 1 wire sensor 1
 #define DOW_2_PIN 6 // Dallas 1 wire sensor 1
+#define PIN 9 // LED Pin
+#define PIN_DELAY 50 
+#define OFF 20
+#define ON 120
 
 typedef enum {
 	// INDEX of system message types
@@ -74,23 +78,31 @@ _Sensor_sysCtrl Sensor_sysCtrl;
 
 // Internal structure to record system state
 typedef struct {
-	byte m1 = _byte_;
-	byte lightTower_state = 0;
-	byte m2 = _byte_;
-	byte waterPump_state = 0;
+
+	byte m1;
+	byte lightTower_state = OFF;
+
+	byte m2;
+	byte waterPump_state = OFF;
+
 	byte m3 = _float_;
-	float temp_sensor_1;
+	float temp_sensor_1 = 0.0;
+
 	byte m4 = _float_;
-	float humidity_sensor_1;
+	float humidity_sensor_1 = 0.0;
+
 	byte m5 = _float_;
-	float temp_sensor_2;
+	float temp_sensor_2 = 0.0;
+
 	byte m6 = _float_;
-	float humidity_sensor_2;
+	float humidity_sensor_2 = 0.0;
+
+
+
+	byte m7 = _ulong_;
+	unsigned long run_count = 0;
 } _sysState;
 _sysState sysState;
-
-
-
 
 #endif
 
