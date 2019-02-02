@@ -16,8 +16,8 @@
 #define SCAN_DEBOUNCE_TIME 20 // ammount of time to wait before next scan interval. Work around for scan calc.
 #ifdef DEBUG
 // DEBUG Test Values
-#define WATER_PUMP_INTERVAL 5 // 30 seconds
-#define LIGHT_TOWER_INTERVAL 10 // 120 seconds 
+#define WATER_PUMP_INTERVAL 30 // 30 seconds
+#define LIGHT_TOWER_INTERVAL 125 // 120 seconds 
 #else
 #define WATER_PUMP_INTERVAL 900 // 15 minutes in seconds
 #define LIGHT_TOWER_INTERVAL 43200 // 12 hours in seconds
@@ -30,8 +30,8 @@
 #define DOW_2_PIN 6 // Dallas 1 wire sensor 1
 #define PIN 9 // LED Pin
 #define PIN_DELAY 50 
-#define OFF 20
-#define ON 120
+#define OFF 0
+#define ON 1
 
 typedef enum {
 	// INDEX of system message types
@@ -79,11 +79,11 @@ _Sensor_sysCtrl Sensor_sysCtrl;
 // Internal structure to record system state
 typedef struct {
 
-	byte m1;
-	byte lightTower_state = OFF;
-
-	byte m2;
+	byte m2 = _byte_;
 	byte waterPump_state = OFF;
+
+	byte m1 = _byte_;
+	byte lightTower_state = OFF;
 
 	byte m3 = _float_;
 	float temp_sensor_1 = 0.0;
@@ -97,11 +97,9 @@ typedef struct {
 	byte m6 = _float_;
 	float humidity_sensor_2 = 0.0;
 
-
-
 	byte m7 = _ulong_;
 	unsigned long run_count = 0;
-} _sysState;
+	} _sysState;
 _sysState sysState;
 
 #endif

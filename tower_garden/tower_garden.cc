@@ -20,7 +20,7 @@ OneWire ows1(DOW_1_PIN);
 DS2438 ds2438_1(&ows1, DS2438_1_addr);
 
 OneWire ows2(DOW_2_PIN);
-DS2438 ds2438_2(&ows2, DS2438_1_addr);
+DS2438 ds2438_2(&ows2, DS2438_2_addr);
 
 void collect_dow_data() {
 	sysState.temp_sensor_1 = ds2438_1.getTemperature();
