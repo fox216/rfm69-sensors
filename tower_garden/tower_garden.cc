@@ -13,19 +13,59 @@ RFM69 radio;
 bool 	readyToXmit = false;
 int 	msgSize = 0;
 
-uint8_t DS2438_1_addr[] = { 0x26, 0x33, 0xB2, 0x6B, 0x00, 0x00, 0x00, 0x1D };
+/* JeeNode Relay Pinout
+	P = 5V
+	D = Digital Input (Relay D)
+	G = Ground
+	A = Digital Input (Relay A)
+
+	Wire Color Code
+
+*/
+
+/* Dallas One Wire Pinout
+	Blue/White = Ground
+	Blue = Signal
+	Orange = 5V 
+	2k resistor between 5v and signal
+*/
+
+const uint8_t OWP_1 = DOW_1_PIN;
+const uint8_t OWP_2 = DOW_2_PIN;
+
+/* Dallas one wire Pin 5
+-Smart Battery Monitor (2438)
+Address=26 C B7 6B 0 0 0 6
+-Programmable Thermometer (18B20)
+Address=28 61 37 C9 0 0 0 95
+-256 EEPROM (2430A)
+Address=14 B8 CC 69 2 0 0 E6
+*/
+uint8_t DS2438_1_addr[] = { 0x26, 0x0C, 0xB7, 0x6B, 0x00, 0x00, 0x00, 0x06 };
+
+
+/* Dallas one wire Pin 6
+-Smart Battery Monitor (2438)
+Address=26 33 B2 6B 0 0 0 1D 
+-Programmable Thermometer (18B20)
+Address=28 18 65 C9 0 0 0 8D
+-256 EEPROM (2430A)
+Address=14 D D4 69 2 0 0 48
+*/
 uint8_t DS2438_2_addr[] = { 0x26, 0x33, 0xB2, 0x6B, 0x00, 0x00, 0x00, 0x1D };
 
-OneWire ows1(DOW_1_PIN);
+OneWire ows1(OWP_1);
 DS2438 ds2438_1(&ows1, DS2438_1_addr);
 
-OneWire ows2(DOW_2_PIN);
+OneWire ows2(OWP_2);
 DS2438 ds2438_2(&ows2, DS2438_2_addr);
 
 void collect_dow_data() {
-	sysState.temp_sensor_1 = ds2438_1.getTemperature();
+	ds2438_1.update();
+	sysState.temp_sensor_1 = ((ds2438_1.getTemperature() * C2F) + 32) - TEMP_CAL;
 	sysState.humidity_sensor_1 = ds2438_1.getVoltage(DS2438_CHA);
-	sysState.temp_sensor_2 = ds2438_2.getTemperature();
+	ds2438_2.update();
+	sysState.temp_sensor_2 = ((ds2438_2.getTemperature() * C2F) +32)  - TEMP_CAL;
 	sysState.humidity_sensor_2 = ds2438_2.getVoltage(DS2438_CHA);
 }
 
@@ -90,11 +130,15 @@ void water_ctrl() {
 }
 
 void setup()  {
-  delay( 10000 ); // power-up safety delay
+  delay( 20000 ); // power-up safety delay
   Serial.begin(115200);
   pinMode(LIGHT_TOWER_PIN, OUTPUT);
 	pinMode(WATER_PUMP_PIN, OUTPUT);
 	pinMode(PIN, OUTPUT);
+	// Start dallas one wire
+	ds2438_1.begin();
+	ds2438_2.begin();
+
 
   // Initialize Radio 
   radio.initialize(FREQUENCY, NODEID, NETWORKID);

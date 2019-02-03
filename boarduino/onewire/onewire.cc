@@ -25,12 +25,14 @@
 #include <DS2438.h>
 
 // define the Arduino digital I/O pin to be used for the 1-Wire network here
-const uint8_t ONE_WIRE_PIN = 2;
+// const uint8_t ONE_WIRE_PIN = 5;
+const uint8_t ONE_WIRE_PIN = 6;
 
                                                                                                          
 
 
 // define the 1-Wire address of the DS2438 battery monitor here (lsb first)
+// uint8_t DS2438_address[] = { 0x26, 0x0C, 0xB7, 0x6B, 0x00, 0x00, 0x00, 0x06 };
 uint8_t DS2438_address[] = { 0x26, 0x33, 0xB2, 0x6B, 0x00, 0x00, 0x00, 0x1D };
 
 OneWire ow(ONE_WIRE_PIN);
@@ -54,7 +56,7 @@ void loop() {
         Serial.print(ds2438.getVoltage(DS2438_CHB), 1);
         Serial.println("v.");
     }
-    delay(5000);
+    // delay(5000);
 }
 
 

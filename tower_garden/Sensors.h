@@ -8,7 +8,7 @@
 #include <Arduino.h>
 #endif
 
-#define DEBUG 1
+// #define DEBUG 1
 
 // Sensor heartbeat = Interval for sensor reporting status
 #define SENSOR_HEART_BEAT 12000 // 20 minutes in seconds
@@ -16,7 +16,7 @@
 #define SCAN_DEBOUNCE_TIME 20 // ammount of time to wait before next scan interval. Work around for scan calc.
 #ifdef DEBUG
 // DEBUG Test Values
-#define WATER_PUMP_INTERVAL 30 // 30 seconds
+#define WATER_PUMP_INTERVAL 10 // 30 seconds
 #define LIGHT_TOWER_INTERVAL 125 // 120 seconds 
 #else
 #define WATER_PUMP_INTERVAL 900 // 15 minutes in seconds
@@ -32,6 +32,8 @@
 #define PIN_DELAY 50 
 #define OFF 0
 #define ON 1
+#define C2F 1.8
+#define TEMP_CAL 1
 
 typedef enum {
 	// INDEX of system message types
@@ -85,17 +87,17 @@ typedef struct {
 	byte m1 = _byte_;
 	byte lightTower_state = OFF;
 
-	byte m3 = _float_;
-	float temp_sensor_1 = 0.0;
+	byte m3 = _double_;
+	double temp_sensor_1;
 
-	byte m4 = _float_;
-	float humidity_sensor_1 = 0.0;
+	byte m4 = _double_;
+	double humidity_sensor_1 = 0.0;
 
-	byte m5 = _float_;
-	float temp_sensor_2 = 0.0;
+	byte m5 = _double_;
+	double temp_sensor_2 = 0.0;
 
-	byte m6 = _float_;
-	float humidity_sensor_2 = 0.0;
+	byte m6 = _double_;
+	double humidity_sensor_2 = 0.0;
 
 	byte m7 = _ulong_;
 	unsigned long run_count = 0;

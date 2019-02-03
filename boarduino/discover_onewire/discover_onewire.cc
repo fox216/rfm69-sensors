@@ -2,7 +2,7 @@
 
 #include <OneWire.h>
 
-OneWire ow(2);  // on pin 2
+OneWire ow(5);  // on pin 2
 
 void setup() {
   Serial.begin(115200);
