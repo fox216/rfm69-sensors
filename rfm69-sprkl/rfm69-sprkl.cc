@@ -109,6 +109,8 @@ void loop() {
 						// unknown program
 						disableAllZones();
 						sysState.sysActive = false;
+						sysState.runProgram = false;
+
 					break;
 				}
 				if (sysState.runProgram) {
